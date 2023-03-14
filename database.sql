@@ -1,0 +1,36 @@
+CREATE TABLE artist(
+    artistID INTEGER PRIMARY KEY, 
+    name VARCHAR(40)
+    );
+CREATE TABLE album(
+    albumID INTEGER PRIMARY KEY, 
+    name VARCHAR(40), 
+    year INTEGER, artistID INTEGER, 
+    FOREIGN KEY (artistID) REFERENCES artist(artistID) ON DELETE CASCADE,
+    FOREIGN KEY (artistID) REFERENCES artist(artistID) ON UPDATE CASCADE
+    );
+CREATE TABLE song(
+    songID INTEGER PRIMARY KEY, 
+    name VARCHAR(40), 
+    duration INTEGER, 
+    year INTEGER, 
+    artistID INTEGER NOT NULL, 
+    FOREIGN KEY (artistID) REFERENCES artist(artistID) ON DELETE CASCADE,
+    FOREIGN KEY (artistID) REFERENCES artist(artistID) ON UPDATE CASCADE
+    );
+CREATE TABLE songOnAlbum(
+    songID INTEGER, 
+    albumID INTEGER, 
+    FOREIGN KEY (songID) REFERENCES song(songID) ON DELETE CASCADE, 
+    FOREIGN KEY (albumID) REFERENCES album(albumID) ON DELETE CASCADE,
+    FOREIGN KEY (songID) REFERENCES song(songID) ON UPDATE CASCADE, 
+    FOREIGN KEY (albumID) REFERENCES album(albumID) ON UPDATE CASCADE
+    );
+CREATE TABLE featuredOn(
+    artistID INTEGER, 
+    songID INTEGER, 
+    FOREIGN KEY (artistID) REFERENCES artist(artistID) ON DELETE CASCADE, 
+    FOREIGN KEY (songID) REFERENCES song(songID) ON DELETE CASCADE,
+    FOREIGN KEY (artistID) REFERENCES artist(artistID) ON UPDATE CASCADE, 
+    FOREIGN KEY (songID) REFERENCES song(songID) ON UPDATE CASCADE
+    );
