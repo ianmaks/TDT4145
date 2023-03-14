@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<jnlp codebase="https://www.ccsoft.no/visualer/" href="VisualER.jnlp">
+  <information>
+    <title>Visual ER</title>
+    <vendor>Vetle Valebjørg, Kristian Skogstrøm</vendor>
+    <homepage href="https://www.ccsoft.no/en/ermod.html"/>
+    <description>Visual ER</description>
+    <description kind="short">Program for å tegne ER-modeller</description>
+  <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.6+"/>
+    <property name="sun.java2d.dpiaware" value="false"/>
+    <jar href="VisualER.jar" main="true"/>
+  </resources>
+  <application-desc main-class="ERMod"/>
+</jnlp>
