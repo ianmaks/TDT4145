@@ -1,16 +1,16 @@
 CREATE TABLE Jernbanestasjon (
     Stasjonsnavn varchar(255) NOT NULL,
-    moh float,
-    PRIMARY KEY (StasjonsNavn)
+    Moh float,
+    CONSTRAINT PRIMARY KEY (StasjonsNavn)
 );
 
 CREATE TABLE TogRute (
-    ID int NOT NULL,
+    TogruteID int NOT NULL,
     Startstasjon varchar(255) NOT NULL,
     Endestasjon varchar(255) NOT NULL,
     Operatør varchar(255) NOT NULL,
-    AdgangsTid datetime,
-    AnkomstTid datetime,
+    AdgangsTid time,
+    AnkomstTid time,
     CONSTRAINT PK PRIMARY KEY (ID),
     CONSTRAINT FK1 FOREIGN KEY (Startstasjon) REFERENCES Jernbanestasjon(Stasjonsnavn)
     ON UPDATE CASCADE
@@ -22,9 +22,9 @@ CREATE TABLE TogRute (
 
 CREATE TABLE VognType (
     Navn varchar(255) NOT NULL,
-    antallRader int,
-    antallSeterPerRad int,
-    antallKupeer int,
+    AntallRader int,
+    AntallSeterPerRad int,
+    AntallKupeer int,
     CONSTRAINT PK PRIMARY KEY (Navn)
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE Banestrekning (
 );
 
 CREATE TABLE Delstrekning (
-    ID int NOT NULL,
+    DelstrekningID int NOT NULL,
     StartStasjon varchar(255) NOT NULL,
     Endestasjon varchar(255) NOT NULL,
     lengde float,
@@ -71,22 +71,22 @@ CREATE TABLE BestårAv (
 
 CREATE TABLE Kunde (
     Kundenummer int NOT NULL,
-    navn varchar(255) NOT NULL,
-    epost varchar(255) NOT NULL,
-    mobilnummer varchar(255) NOT NULL,
+    Navn varchar(255) NOT NULL,
+    Epost varchar(255) NOT NULL,
+    Mobilnummer varchar(255) NOT NULL,
     CONSTRAINT PK PRIMARY KEY (Kundenummer)
 );
 
 CREATE TABLE TogruteForekomst (
     TogruteID int NOT NULL,
-    Dag datetime NOT NULL,
+    Dag Varchar(255) NOT NULL,
     CONSTRAINT PK PRIMARY KEY (TogruteID, Dag)
 );
 
 CREATE TABLE KundeOrdre (
     OrdreNummer int NOT NULL,
-    Dag datetime NOT NULL,
-    Tid datetime NOT NULL,
+    Dag date NOT NULL,
+    Tid time NOT NULL,
     Kundenummer int NOT NULL,
     CONSTRAINT PK PRIMARY KEY (OrdreNummer),
     CONSTRAINT FK FOREIGN KEY (Kundenummer) REFERENCES Kunde(Kundenummer)
@@ -95,7 +95,7 @@ CREATE TABLE KundeOrdre (
 
 CREATE TABLE Billett (
     BillettID int NOT NULL,
-    ordrenummer int NOT NULL,
+    Ordrenummer int NOT NULL,
     DelstrekningID int NOT NULL,
     VognNavn varchar(255),
     CONSTRAINT PK PRIMARY KEY (BillettID),
@@ -112,7 +112,7 @@ CREATE TABLE Billett (
 
 CREATE TABLE HarPlass (
     BillettID int NOT NULL,
-    plasser int NOT NULL,
+    Plasser int NOT NULL,
     ForekomstID int NOT NULL,
     CONSTRAINT PK PRIMARY KEY (BillettID),
     CONSTRAINT FK1 FOREIGN KEY (BillettID) REFERENCES Billett(BillettID)
@@ -122,3 +122,28 @@ CREATE TABLE HarPlass (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+
+CREATE TABLE StrekningInnom(
+    DelstrekningID int NOT NULL,
+    Stasjonsnavn varchar(255) NOT NULL,
+    CONSTRAINT PK PRIMARY KEY (DelstrekningID),
+    CONSTRAINT FK1 FOREIGN KEY (Stasjonsnavn) REFERENCES Jernbanestasjon(Stasjonsnavn)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    
+);
+
+CREATE TABLE RuteInnom(
+    TogruteID int NOT NULL,
+    Stasjonsnavn varchar(255) NOT NULL,
+    AnkomstTid time,
+    AvgangsTid time,
+    CONSTRAINT PK PRIMARY KEY (TogruteID, Stasjonsnavn),
+    CONSTRAINT FK1 FOREIGN KEY (TogruteID) REFERENCES Togrute(TogruteID)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT FK2 FOREIGN KEY (Stasjonsnavn) REFERENCES Jernbanestasjon(StasjonsNavn)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+)
