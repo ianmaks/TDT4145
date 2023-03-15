@@ -1,3 +1,8 @@
+#For en stasjon som oppgis, 
+#skal bruker få ut alle togruter 
+#som er innom stasjonen en gitt ukedag. 
+#Denne funksjonaliteten skal programmeres.
+
 import sqlite3
 con = sqlite3.connect("tog.db")
 cursor = con.cursor()
