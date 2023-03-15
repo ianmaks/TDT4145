@@ -79,7 +79,7 @@ CREATE TABLE Kunde (
 
 CREATE TABLE TogruteForekomst (
     ForekomstID int NOT NULL,
-    Dag Varchar(255) NOT NULL,
+    Ukedag Varchar(255) NOT NULL,
     Dato date NOT NULL,
     TogruteID int NOT NULL,
     CONSTRAINT PK PRIMARY KEY (ForekomstID, Dato),
