@@ -12,5 +12,5 @@ cursor.execute(f"SELECT TogruteID \
                FROM TogRute JOIN TogruteForekomst ON TogRute.TogruteID = TogruteForekomst.TogruteID \
                JOIN RuteInnom ON  RuteInnom.TogruteID = TogRute.TogruteID\
                JOIN Jernbanestasjon ON Jernbanestasjon.Stasjonsnavn = RuteInnom.Stasjonsnavn\
-               WHERE dag='{ukedag}' AND stasjonsnavn='{stasjon} ")
+               WHERE dag='{ukedag}' AND stasjonsnavn='{stasjon}'")
 con.close()
