@@ -20,7 +20,7 @@ insert into Delstrekning (DelstrekningID, Lengde, Sportype, StartStasjon, Endest
 (11, 260, "Enkeltspor", "Mosjøen", "Fauske"),
 (12, 320, "Enkeltspor", "Mosjøen", "Bodø"),
 (13, 170, "Enkeltspor", "Mo i Rana", "Fauske"),
-(14, 230, "Enkeltspor", "Mo i Rana", "Bodø");
+(14, 230, "Enkeltspor", "Mo i Rana", "Bodø"),
 (15, 60, "Enkeltspor", "Fauske", "Bodø");
 
 insert into Banestrekning (Banestrekningnavn, Start, Slutt, Fremdriftsenergi) values
@@ -71,16 +71,15 @@ insert into TogRute (TogruteID, Operatør, StartStasjon, EndeStasjon, AvgangsTid
 ("Mo i Rana-Trondheim-morgentog", "SJ", "Mo i Rana", "Trondheim", 08:11:00, 14:13:00);
 
 insert into RuteInnom (TogRuteID, Jernbanestasjon) values
-("Trondheim-Bodø-dagtog", "Steinkjer")
-("Trondheim-Bodø-dagtog", "Mosjøen")
-("Trondheim-Bodø-dagtog", "Mo i Rana")
-("Trondheim-Bodø-dagtog", "Fauske")
-
-("Trondheim-Bodø-nattog", "Steinkjer")
-("Trondheim-Bodø-nattog", "Mosjøen")
-("Trondheim-Bodø-nattog", "Mo i Rana")
-("Trondheim-Bodø-nattog", "Fauske")
-("Mo i Rana-Trondheim-morgentog", "Mosjøen")
+("Trondheim-Bodø-dagtog", "Steinkjer"),
+("Trondheim-Bodø-dagtog", "Mosjøen"),
+("Trondheim-Bodø-dagtog", "Mo i Rana"),
+("Trondheim-Bodø-dagtog", "Fauske"),
+("Trondheim-Bodø-nattog", "Steinkjer"),
+("Trondheim-Bodø-nattog", "Mosjøen"),
+("Trondheim-Bodø-nattog", "Mo i Rana"),
+("Trondheim-Bodø-nattog", "Fauske"),
+("Mo i Rana-Trondheim-morgentog", "Mosjøen"),
 ("Mo i Rana-Trondheim-morgentog", "Steinkjer");
 
 insert into TogruteForekomst (ForekomstID, Dag, TogruteID) values
