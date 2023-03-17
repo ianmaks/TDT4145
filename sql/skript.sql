@@ -59,12 +59,12 @@ CREATE TABLE Delstrekning (
 
 CREATE TABLE BestårAv (
     Navn varchar(255) NOT NULL,
-    ID int NOT NULL,
-    CONSTRAINT PK PRIMARY KEY (Navn, ID),
+    DelstrekningID int NOT NULL,
+    CONSTRAINT PK PRIMARY KEY (Navn, DelstrekningID),
     CONSTRAINT FK1 FOREIGN KEY (Navn) REFERENCES Banestrekning(Navn)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-    CONSTRAINT FK2 FOREIGN KEY (ID) REFERENCES Delstrekning(ID)
+    CONSTRAINT FK2 FOREIGN KEY (DelstrekningID) REFERENCES Delstrekning(DelstrekningID)
     ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -79,9 +79,14 @@ CREATE TABLE Kunde (
 
 CREATE TABLE TogruteForekomst (
     ForekomstID int NOT NULL,
+    Ukedag Varchar(255) NOT NULL,
+    Dato date NOT NULL,
     TogruteID int NOT NULL,
-    Dag Varchar(255) NOT NULL,
-    CONSTRAINT PK PRIMARY KEY (TogruteID, Dag)
+    CONSTRAINT PK PRIMARY KEY (ForekomstID, Dato),
+    CONSTRAINT FK FOREIGN KEY (TogruteID) REFERENCES TogRute(TogruteID)
+    ON UPDATE CASCADE 
+    ON UPDATE DELETE
+
 );
 
 CREATE TABLE KundeOrdre (
@@ -100,10 +105,10 @@ CREATE TABLE Billett (
     DelstrekningID int NOT NULL,
     VognNavn varchar(255),
     CONSTRAINT PK PRIMARY KEY (BillettID),
-    CONSTRAINT FK1 FOREIGN KEY (ordrenummer) REFERENCES KundeOrdre(OrdreNummer)
+    CONSTRAINT FK1 FOREIGN KEY (Ordrenummer) REFERENCES KundeOrdre(OrdreNummer)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-    CONSTRAINT FK2 FOREIGN KEY (DelstrekningID) REFERENCES Delstrekning(ID)
+    CONSTRAINT FK2 FOREIGN KEY (DelstrekningID) REFERENCES Delstrekning(DelstrekningID)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
     CONSTRAINT FK3 FOREIGN KEY (VognNavn) REFERENCES VognType(Navn)
@@ -128,8 +133,11 @@ CREATE TABLE HarPlass (
 CREATE TABLE StrekningInnom(
     DelstrekningID int NOT NULL,
     Stasjonsnavn varchar(255) NOT NULL,
-    CONSTRAINT PK PRIMARY KEY (DelstrekningID),
+    CONSTRAINT PK PRIMARY KEY (DelstrekningID, StasjonsNavn),
     CONSTRAINT FK1 FOREIGN KEY (Stasjonsnavn) REFERENCES Jernbanestasjon(Stasjonsnavn)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+    CONSTRAINT FK2 FOREIGN KEY (DelstrekningID) REFERENCES Delstrekning(DelstrekningID)
     ON UPDATE CASCADE
     ON DELETE CASCADE
     
