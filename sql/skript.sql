@@ -29,7 +29,7 @@ CREATE TABLE VognType (
 );
 
 CREATE TABLE Banestrekning (
-    Navn varchar(255) NOT NULL,
+    BanestrekningNavn varchar(255) NOT NULL,
     Start varchar(255) NOT NULL,
     Slutt varchar(255) NOT NULL,
     Fremdriftsenergi varchar(255),
@@ -58,10 +58,10 @@ CREATE TABLE Delstrekning (
 );
 
 CREATE TABLE BestårAv (
-    Navn varchar(255) NOT NULL,
+    BaneStrekningNavn varchar(255) NOT NULL,
     DelstrekningID int NOT NULL,
-    CONSTRAINT PK PRIMARY KEY (Navn, DelstrekningID),
-    CONSTRAINT FK1 FOREIGN KEY (Navn) REFERENCES Banestrekning(Navn)
+    CONSTRAINT PK PRIMARY KEY (BaneStrekningNavn, DelstrekningID),
+    CONSTRAINT FK1 FOREIGN KEY (BaneStrekningNavn) REFERENCES Banestrekning(BaneStrekningNavn)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
     CONSTRAINT FK2 FOREIGN KEY (DelstrekningID) REFERENCES Delstrekning(DelstrekningID)

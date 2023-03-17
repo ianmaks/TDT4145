@@ -6,7 +6,7 @@ insert into Jernbanestasjon (Stasjonsnavn, Moh) values
 ("Fauske", 34.0),
 ("Bodø", 4.1);
 
-insert into Delstrekning (ID, Lengde, Sportype, StartStasjon, Endestasjon) values 
+insert into Delstrekning (DelstrekningID, Lengde, Sportype, StartStasjon, Endestasjon) values 
 (1, 120, "Dobbeltspor", "Trondheim", "Steinkjer"),
 (2, 400, "Enkeltspor", "Trondheim", "Mosjøen"),
 (3, 490, "Enkeltspor", "Trondheim", "Mo i Rana"),
@@ -26,7 +26,7 @@ insert into Delstrekning (ID, Lengde, Sportype, StartStasjon, Endestasjon) value
 insert into Banestrekning (Banestrekningnavn, Start, Slutt, Fremdriftsenergi) values
 ("Trondheim-Bodø", "Trondheim", "Bodø", "Diesel");
 
-insert into BestårAv (Navn, ID) values
+insert into BestårAv (BanestrekningNavn, DelstrekningID) values
 ("Trondheim-Bodø", 1),
 ("Trondheim-Bodø", 2),
 ("Trondheim-Bodø", 3),
@@ -106,6 +106,6 @@ insert into TogruteForekomst (ForekomstID, Dag, TogruteID) values
 ("moi-tro-mor-lør", "Lørdag", "Mo i Rana-Trondheim-morgentog"),
 ("moi-tro-mor-søn", "Søndag", "Mo i Rana-Trondheim-morgentog");
 
-insert into VognType (VognID, VognType, AntallRader, AntallSeterPerRad, AntallKupeer) values
+insert into VognType (VognNavn, VognType, AntallRader, AntallSeterPerRad, AntallKupeer) values
 ("1", "SJ-sittevogn-1", 3, 4, NULL),
 ("2", "SJ-sovevogn-1", NULL, NULL, 4);
