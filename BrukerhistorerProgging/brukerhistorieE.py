@@ -10,5 +10,6 @@ con = sqlite3.connect("tog.db")
 cursor = con.cursor()
 cursor.execute(f"INSERT INTO Kunde \
                 VALUES ({kundenummer},{navn} ,{epost} ,{mobilnummer});") 
-#må vi her legge inn feil om den finnes? dumt med random kundenummer?
+
+print("Kunde registret! Ditt kundenummer er: ",kundenummer)
 con.close()
