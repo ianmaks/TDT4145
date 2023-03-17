@@ -33,7 +33,7 @@ CREATE TABLE Banestrekning (
     Start varchar(255) NOT NULL,
     Slutt varchar(255) NOT NULL,
     Fremdriftsenergi varchar(255),
-    CONSTRAINT PK PRIMARY KEY (Navn),
+    CONSTRAINT PK PRIMARY KEY (BaneStrekningNavn),
     CONSTRAINT FK1 FOREIGN KEY (Start) REFERENCES Jernbanestasjon(Stasjonsnavn)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
