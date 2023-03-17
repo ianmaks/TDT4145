@@ -2,7 +2,7 @@
 #reiser. Denne funksjonaliteten skal programmeres.
 import sqlite3
 
-uuid=input("Legg inn uuid:")
+uuid=input("Legg inn kundenummer:")
 con = sqlite3.connect("tog.db")
 cursor = con.cursor()
 cursor.execute(f"")
