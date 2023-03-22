@@ -28,7 +28,11 @@ dato= input("dato f eks.(31.03.2023): ")
 klokkeslett= input("klokkeslett: ")
 
 cursor = con.cursor()
-cursor.execute(f"Select TogRuteID, AdgangsTid from TogRute natural join TogruteForekomst where StartStasjon == "{startStasjon}" and EndeStasjon == "{sluttStasjon}" and (Dato == "{ukedag(dato)}" OR Dato == "{nesteukedag(dato)}") order by AdgangsTid;")
+cursor.execute(f"Select Togrute.TogruteID, AvgangsTid from Togrute\
+                 join TogruteForekomst ON (TogruteForekomst.TogruteID = TogRute.TogruteID) where \
+                 StartStasjon == '{startStasjon}' and EndeStasjon == '{sluttStasjon}' \
+                 and (Ukedag == '{ukedag(dato)}' OR Ukedag == '{nesteukedag(dato)}') \
+                 order by AvgangsTid;")
 results = cursor.fetchall()
 print(results)
 con.close()
