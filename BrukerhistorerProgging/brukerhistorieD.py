@@ -10,7 +10,7 @@ def nextDay(dato):
     dato[0] = int(dato[0]) + 1
     return ".".join(dato)
 
-con = sqlite3.connect("tog.db")
+con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
 
 startStasjon= input("Startstasjon: ")
 sluttStasjon= input("Sluttstasjon: ")

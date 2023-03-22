@@ -4,7 +4,7 @@
 #Denne funksjonaliteten skal programmeres.
 
 import sqlite3
-con = sqlite3.connect("tog.db")
+con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
 cursor = con.cursor()
 stasjon = input("Hvilken stasjon vil du ha togruter for?").lower()
 ukedag = input("Hvilken ukedag ønsker du å sjekke?").lower()

@@ -8,7 +8,7 @@ kundenummer=input("Legg inn kundenummer: ")
 start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
 
-con = sqlite3.connect("tog.db")
+con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
 cursor = con.cursor()
 cursor.execute(f"")
 
