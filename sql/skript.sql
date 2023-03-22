@@ -92,7 +92,7 @@ CREATE TABLE TogruteForekomst (
 CREATE TABLE KundeOrdre (
     OrdreNummer int NOT NULL,
     Dag date NOT NULL,
-    Tid time NOT NULL,
+    Tid Varchar(255) NOT NULL,
     Kundenummer int NOT NULL,
     CONSTRAINT PK PRIMARY KEY (OrdreNummer),
     CONSTRAINT FK FOREIGN KEY (Kundenummer) REFERENCES Kunde(Kundenummer)
