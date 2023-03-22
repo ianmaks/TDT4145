@@ -6,7 +6,7 @@ epost=input("Legg inn epost: ")
 mobilnummer=input("Legg inn mobilnummer: ")
 kundenummer=uuid4()
 
-con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
+con = sqlite3.connect("sql/tog.db")
 cursor = con.cursor()
 cursor.execute(f"INSERT INTO Kunde \
                 VALUES ({kundenummer},{navn} ,{epost} ,{mobilnummer});") 

@@ -20,7 +20,7 @@ def nesteukedag(dato):
     ukedagsnummer = dateObj.weekday()+1
     return dager[ukedagsnummer]
 
-con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
+con = sqlite3.connect("sql/tog.db")
 
 startStasjon= input("Startstasjon: ")
 sluttStasjon= input("Sluttstasjon: ")

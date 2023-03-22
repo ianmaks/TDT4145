@@ -3,7 +3,7 @@
 import sqlite3
 
 uuid=input("Legg inn kundenummer:")
-con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
+con = sqlite3.connect("sql/tog.db")
 cursor = con.cursor()
 cursor.execute(f"")
 results = cursor.fetchall()
