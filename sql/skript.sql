@@ -9,8 +9,8 @@ CREATE TABLE TogRute (
     Startstasjon varchar(255) NOT NULL,
     Endestasjon varchar(255) NOT NULL,
     Operatør varchar(255) NOT NULL,
-    AdgangsTid time,
-    AnkomstTid time,
+    AvgangsTid varchar(255),
+    AnkomstTid varchar(255),
     CONSTRAINT PK PRIMARY KEY (TogruteID),
     CONSTRAINT FK1 FOREIGN KEY (Startstasjon) REFERENCES Jernbanestasjon(Stasjonsnavn)
     ON UPDATE CASCADE
@@ -21,11 +21,12 @@ CREATE TABLE TogRute (
 );
 
 CREATE TABLE VognType (
-    Navn varchar(255) NOT NULL,
+    VognType int,
+    VognNavn varchar(255) NOT NULL,
     AntallRader int,
     AntallSeterPerRad int,
     AntallKupeer int,
-    CONSTRAINT PK PRIMARY KEY (Navn)
+    CONSTRAINT PK PRIMARY KEY (VognNavn)
 );
 
 CREATE TABLE Banestrekning (
@@ -80,9 +81,8 @@ CREATE TABLE Kunde (
 CREATE TABLE TogruteForekomst (
     ForekomstID int NOT NULL,
     Ukedag Varchar(255) NOT NULL,
-    Dato date NOT NULL,
     TogruteID int NOT NULL,
-    CONSTRAINT PK PRIMARY KEY (ForekomstID, Dato),
+    CONSTRAINT PK PRIMARY KEY (ForekomstID, Ukedag),
     CONSTRAINT FK FOREIGN KEY (TogruteID) REFERENCES TogRute(TogruteID)
     ON UPDATE CASCADE 
     ON DELETE CASCADE

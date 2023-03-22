@@ -65,12 +65,12 @@ insert into StrekningInnom (DelstrekningID, Stasjonsnavn) values
 (12, "Fauske"),
 (14, "Fauske");
 
-insert into TogRute (TogruteID, Operatør, StartStasjon, EndeStasjon, AvgangsTid, AnkomstTid) values
-("Trondheim-Bodø-dagtog", "SJ", "Trondheim", "Bodø", 07:49:00, 17:34:00),
-("Trondheim-Bodø-nattog", "SJ", "Trondheim", "Bodø", 23:05:00, 09:05:00),
-("Mo i Rana-Trondheim-morgentog", "SJ", "Mo i Rana", "Trondheim", 08:11:00, 14:13:00);
+insert into TogRute (TogruteID, StartStasjon, EndeStasjon, Operatør, AvgangsTid, AnkomstTid) values
+("Trondheim-Bodø-dagtog","Trondheim", "Bodø", "SJ", "07:49:00", "17:34:00"),
+("Trondheim-Bodø-nattog", "Trondheim", "Bodø", "SJ", "23:05:00", "09:05:00"),
+("Mo i Rana-Trondheim-morgentog","Mo i Rana", "Trondheim",  "SJ", "08:11:00", "14:13:00");
 
-insert into RuteInnom (TogRuteID, Jernbanestasjon) values
+insert into RuteInnom (TogRuteID, Stasjonsnavn) values
 ("Trondheim-Bodø-dagtog", "Steinkjer"),
 ("Trondheim-Bodø-dagtog", "Mosjøen"),
 ("Trondheim-Bodø-dagtog", "Mo i Rana"),
@@ -82,7 +82,7 @@ insert into RuteInnom (TogRuteID, Jernbanestasjon) values
 ("Mo i Rana-Trondheim-morgentog", "Mosjøen"),
 ("Mo i Rana-Trondheim-morgentog", "Steinkjer");
 
-insert into TogruteForekomst (ForekomstID, Dag, TogruteID) values
+insert into TogruteForekomst (ForekomstID, Ukedag, TogruteID) values
 ("tro-bod-dag-man", "Mandag", "Trondheim-Bodø-dagtog"),
 ("tro-bod-dag-tir", "Tirsdag", "Trondheim-Bodø-dagtog"),
 ("tro-bod-dag-ons", "Onsdag", "Trondheim-Bodø-dagtog"),
@@ -105,6 +105,6 @@ insert into TogruteForekomst (ForekomstID, Dag, TogruteID) values
 ("moi-tro-mor-lør", "Lørdag", "Mo i Rana-Trondheim-morgentog"),
 ("moi-tro-mor-søn", "Søndag", "Mo i Rana-Trondheim-morgentog");
 
-insert into VognType (VognNavn, VognType, AntallRader, AntallSeterPerRad, AntallKupeer) values
-("1", "SJ-sittevogn-1", 3, 4, NULL),
-("2", "SJ-sovevogn-1", NULL, NULL, 4);
+insert into VognType (VognType, VognNavn, AntallRader, AntallSeterPerRad, AntallKupeer) values
+(1, "SJ-sittevogn-1", 3, 4, NULL),
+(2, "SJ-sovevogn-1", NULL, NULL, 4);
