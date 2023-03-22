@@ -4,11 +4,21 @@
 # returneres, sortert på tid. 
 # Denne funksjonaliteten skal programmeres.
 import sqlite3
+import datetime
 
-def nextDay(dato):
-    dato = dato.split(".")
-    dato[0] = int(dato[0]) + 1
-    return ".".join(dato)
+def ukedag(dato):
+    dager = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag', 'søndag']
+
+    dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
+    ukedagsnummer = dateObj.weekday()
+    return dager[ukedagsnummer]
+
+def nesteukedag(dato):
+    dager = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag', 'søndag','mandag']
+
+    dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
+    ukedagsnummer = dateObj.weekday()+1
+    return dager[ukedagsnummer]
 
 con = sqlite3.connect("python/TDT4145_prosjekt/sql/tog.db")
 
@@ -18,9 +28,5 @@ dato= input("dato f eks.(31.03.2023): ")
 klokkeslett= input("klokkeslett: ")
 
 cursor = con.cursor()
-cursor.execute(f"Select TogRuteID, AdgangsTid from TogRute
-                natural join TogruteForekomst \
-                where StartStasjon == "{startStasjon}" \
-                and EndeStasjon == "{sluttStasjon}" \
-                and (Dato == "{dato}" OR Dato == "{dato}"+1) order by AdgangsTid;")
+cursor.execute(f"Select TogRuteID, AdgangsTid from TogRute natural join TogruteForekomst where StartStasjon == "{startStasjon}" and EndeStasjon == "{sluttStasjon}" and (Dato == "{ukedag(dato)}" OR Dato == "{nesteukedag(dato)}") order by AdgangsTid;")
 con.close()
