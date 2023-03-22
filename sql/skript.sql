@@ -5,7 +5,7 @@ CREATE TABLE Jernbanestasjon (
 );
 
 CREATE TABLE TogRute (
-    TogruteID int NOT NULL,
+    TogruteID varchar(255) NOT NULL,
     Startstasjon varchar(255) NOT NULL,
     Endestasjon varchar(255) NOT NULL,
     Operatør varchar(255) NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE Kunde (
 );
 
 CREATE TABLE TogruteForekomst (
-    ForekomstID int NOT NULL,
+    ForekomstID Varchar(255) NOT NULL,
     Ukedag Varchar(255) NOT NULL,
     TogruteID int NOT NULL,
     CONSTRAINT PK PRIMARY KEY (ForekomstID, Ukedag),

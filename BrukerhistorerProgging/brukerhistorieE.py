@@ -13,12 +13,12 @@ def newUserID():
 navn=input("Legg inn navn: ")
 epost=input("Legg inn epost: ")
 mobilnummer=input("Legg inn mobilnummer: ")
-kundenummer=newUserID();
+kundenummer=newUserID()
 
 con = sqlite3.connect("sql/tog.db")
 cursor = con.cursor()
 cursor.execute(f"INSERT INTO Kunde (Kundenummer, Navn, Epost, Mobilnummer) \
-                VALUES ('{kundenummer}','{navn}' ,'{epost}' ,'{mobilnummer}');") 
+                VALUES ('{kundenummer}','{navn}' ,'{epost}' ,'{mobilnummer}');")
 con.commit()
 
 print("Kunde registret! Ditt kundenummer er: ",kundenummer)
