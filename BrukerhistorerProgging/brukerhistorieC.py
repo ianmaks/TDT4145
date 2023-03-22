@@ -9,11 +9,10 @@ cursor = con.cursor()
 stasjon = input("Hvilken stasjon vil du ha togruter for?")
 ukedag = input("Hvilken ukedag ønsker du å sjekke?")
 
-cursor.execute(f"Select TogRuteID from TogRute \
-                Natural Join TogruteForekomst \
-                Natural join RuteInnom \
-                Natural join Jernbanestasjon\
-                WHERE TogruteForekomst.Ukedag=='{ukedag}' AND Jernbanestasjon.StasjonsNavn=='{stasjon}';")
+cursor.execute(f"Select Ukedag, RuteInnom.Stasjonsnavn, TogRute.TogruteID \
+               From TogruteForekomst join TogRute on (TogruteForekomst.TogruteID = TogRute.TogruteID) \
+               join RuteInnom on (TogruteForekomst.TogruteID = RuteInnom.TogruteID) \
+               Where Ukedag == '{ukedag}' AND RuteInnom.Stasjonsnavn == '{stasjon}';")
 results = cursor.fetchall()
 print(results)
 con.close()

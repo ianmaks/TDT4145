@@ -8,8 +8,9 @@ kundenummer=uuid4()
 
 con = sqlite3.connect("sql/tog.db")
 cursor = con.cursor()
-cursor.execute(f"INSERT INTO Kunde \
-                VALUES ({kundenummer},{navn} ,{epost} ,{mobilnummer});") 
+cursor.execute(f"INSERT INTO Kunde (Kundenummer, Navn, Epost, Mobilnummer) \
+                VALUES ('{kundenummer}','{navn}' ,'{epost}' ,'{mobilnummer}');") 
+con.commit()
 
 print("Kunde registret! Ditt kundenummer er: ",kundenummer)
 con.close()
