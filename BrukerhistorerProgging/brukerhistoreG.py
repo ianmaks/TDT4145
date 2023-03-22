@@ -13,4 +13,9 @@ cursor = con.cursor()
 cursor.execute(f"")
 
 kjope=input("angi hvilken du ønsker å kjøpe")
+
+cursor.execute(f"")
+
+results = cursor.fetchall()
+print(results)
 con.close()

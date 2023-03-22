@@ -29,4 +29,6 @@ klokkeslett= input("klokkeslett: ")
 
 cursor = con.cursor()
 cursor.execute(f"Select TogRuteID, AdgangsTid from TogRute natural join TogruteForekomst where StartStasjon == "{startStasjon}" and EndeStasjon == "{sluttStasjon}" and (Dato == "{ukedag(dato)}" OR Dato == "{nesteukedag(dato)}") order by AdgangsTid;")
+results = cursor.fetchall()
+print(results)
 con.close()
