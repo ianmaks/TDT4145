@@ -28,11 +28,22 @@ dato= input("dato f eks.(31.03.2023): ")
 klokkeslett= input("klokkeslett f eks. (07:49:00): ")
 
 cursor = con.cursor()
-cursor.execute(f"Select Togrute.TogruteID, TogruteForekomst.Ukedag ,Togrute.AvgangsTid from Togrute\
-                join TogruteForekomst ON (TogruteForekomst.TogruteID = TogRute.TogruteID) where \
-                StartStasjon == '{startStasjon}' and EndeStasjon == '{sluttStasjon}' \
-                and ((Ukedag == '{ukedag(dato)}' AND AvgangsTid >= '{klokkeslett}') OR Ukedag == '{nesteukedag(dato)}') \
-                order by AvgangsTid;")
+cursor.execute(f"Select DISTINCT Togrute.TogruteID , TogruteForekomst.Ukedag from Togrute\
+                join TogruteForekomst ON (TogruteForekomst.TogruteID = TogRute.TogruteID) \
+                join RuteInnom ON ( TogRute.TogruteID = RuteInnom.TogruteID) \
+                where (((Ukedag == '{ukedag(dato)}' AND (TogRute.AvgangsTid >= '{klokkeslett}' \
+                OR RuteInnom.AvgangsTid >= '{klokkeslett}')) OR Ukedag == '{nesteukedag(dato)}')) \
+                and ((TogRute.StartStasjon = '{startStasjon}' and TogRute.EndeStasjon = '{sluttStasjon}') \
+                OR (TogRute.StartStasjon = '{startStasjon}' AND RuteInnom.Stasjonsnavn = '{sluttStasjon}') \
+                OR (TogRute.EndeStasjon = '{sluttStasjon}' AND RuteInnom.Stasjonsnavn = '{startStasjon}'))\
+                Order by TogRute.AvgangsTid, RuteInnom.AvgangsTid, TogruteForekomst.Ukedag ASC;")
 results = cursor.fetchall()
-print(results)
+
+def FormaterSvar():
+    s = (f"Togruter som går mellom {startStasjon} og {sluttStasjon} er: \n")
+    for i in range(0,len(results)):
+        s += (f"{results[i][0]}  Dag: {results[i][1]}\n")
+    return s
+
+print(FormaterSvar())
 con.close()

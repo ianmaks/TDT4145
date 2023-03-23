@@ -12,7 +12,11 @@ cursor = con.cursor()
 #                VALUES (5, 1, 'tro-bod-dag-man');")
 
 
-cursor.execute(f"UPDATE KundeOrdre Set Dag = '2023-03-21' Where Ordrenummer = 5; ")
+#cursor.execute(f"UPDATE KundeOrdre Set Dag = '2023-03-21' Where Ordrenummer = 5; ")
+
+
+#cursor.execute(f"Update RuteInnom Set AnkomstTid = '12:29:00', AvgangsTid = '12:31:00' \
+#              Where TogruteID = 'Mo i Rana-Trondheim-morgentog' AND Stasjonsnavn = 'Steinkjer';")
 
 con.commit()
 con.close()
