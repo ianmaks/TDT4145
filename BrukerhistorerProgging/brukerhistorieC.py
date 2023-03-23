@@ -3,6 +3,7 @@
 #som er innom stasjonen en gitt ukedag. 
 #Denne funksjonaliteten skal programmeres.
 
+
 import sqlite3
 con = sqlite3.connect("sql/tog.db")
 cursor = con.cursor()
@@ -14,5 +15,12 @@ cursor.execute(f"Select Ukedag, RuteInnom.Stasjonsnavn, TogRute.TogruteID \
                join RuteInnom on (TogruteForekomst.TogruteID = RuteInnom.TogruteID) \
                Where Ukedag == '{ukedag}' AND RuteInnom.Stasjonsnavn == '{stasjon}';")
 results = cursor.fetchall()
-print(results)
+
+def FormatertSvar():
+    s = (f"Togruter som er gjennom {stasjon} på {ukedag}: \n")
+    for i in range(0,len(results)):
+        s += (f"{results[i][2]}\n")
+    return s
+
+print(FormatertSvar())
 con.close()

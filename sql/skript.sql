@@ -82,7 +82,7 @@ CREATE TABLE TogruteForekomst (
     ForekomstID Varchar(255) NOT NULL,
     Ukedag Varchar(255) NOT NULL,
     TogruteID int NOT NULL,
-    CONSTRAINT PK PRIMARY KEY (ForekomstID, Ukedag),
+    CONSTRAINT PK PRIMARY KEY (ForekomstID),
     CONSTRAINT FK FOREIGN KEY (TogruteID) REFERENCES TogRute(TogruteID)
     ON UPDATE CASCADE 
     ON DELETE CASCADE
@@ -146,8 +146,8 @@ CREATE TABLE StrekningInnom(
 CREATE TABLE RuteInnom(
     TogruteID int NOT NULL,
     Stasjonsnavn varchar(255) NOT NULL,
-    AnkomstTid time,
-    AvgangsTid time,
+    AnkomstTid Varchar(255),
+    AvgangsTid Varchar(255),
     CONSTRAINT PK PRIMARY KEY (TogruteID, Stasjonsnavn),
     CONSTRAINT FK1 FOREIGN KEY (TogruteID) REFERENCES Togrute(TogruteID)
     ON UPDATE CASCADE

@@ -1,11 +1,15 @@
-##import sqlite3
-##con = sqlite3.connect("sql/tog.db")
-##cursor = con.cursor()
-##cursor.execute(f"INSERT INTO KundeOrdre (Ordrenummer, Dag, Tid, KundeNummer) \
-##                VALUES (3, 2023-04-20, 07:20:00,3);")
-##
-##cursor.execute(f"INSERT INTO Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) \
-##                VALUES (3, 3, 10, SJ-sittevogn-1);")
-##
-##con.commit()
-##con.close()
+import sqlite3
+con = sqlite3.connect("sql/tog.db")
+cursor = con.cursor()
+#cursor.execute(f"INSERT INTO KundeOrdre (Ordrenummer, Dag, Tid, KundeNummer) \
+#                VALUES (4, 2023-05-15, '08:11:00' ,1);")
+#
+#cursor.execute(f"INSERT INTO Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) \
+#                VALUES (4, 4, 4, 'SJ-sovevogn-1');")
+#
+#cursor.execute(f"INSERT INTO HarPlass (BillettID, Plasser, ForekomstID) \
+#                VALUES (3, 1, 'moi-tro-mor-man');")
+
+
+con.commit()
+con.close()

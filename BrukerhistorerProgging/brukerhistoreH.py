@@ -20,8 +20,9 @@ cursor.execute(f" Select KundeOrdre.Ordrenummer, KundeOrdre.Dag, Billett.Billett
 results = cursor.fetchall()
 
 def FormatertSvar():
+    s = ""
     for i in range(0,len(results)):
-        s = "".join(f"Ordrenummer: {results[i][0]} \nDag: {results[i][1]} \nUkedag: {results[i][6]} \nBilletID: {results[i][2]} \n{results[i][3]} til {results[i][4]} \nTogruteForekomst: {results[i][5]} \n")
+        s += (f"Ordrenummer: {results[i][0]} \nDag: {results[i][1]} \nUkedag: {results[i][6]} \nBilletID: {results[i][2]} \n{results[i][3]} til {results[i][4]} \nTogruteForekomst: {results[i][5]} \n\n")
     return s
 print(FormatertSvar())
 con.close()

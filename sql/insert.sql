@@ -21,7 +21,14 @@ insert into Delstrekning (DelstrekningID, Lengde, Sportype, StartStasjon, Endest
 (12, 320, "Enkeltspor", "Mosjøen", "Bodø"),
 (13, 170, "Enkeltspor", "Mo i Rana", "Fauske"),
 (14, 230, "Enkeltspor", "Mo i Rana", "Bodø"),
-(15, 60, "Enkeltspor", "Fauske", "Bodø");
+(15, 60, "Enkeltspor", "Fauske", "Bodø"),
+(16, 90, "Enkeltspor", "Mo i Rana", "Mosjøen"),
+(17, 370, "Enkeltspor", "Mo i Rana", "Steinkjer"),
+(18, 490, "Enkeltspor", "Mo i Rana", "Trondheim"),
+(19, 280, "Enkeltspor", "Mosjøen", "Steinkjer"),
+(20, 400, "Enkeltspor", "Mosjøen", "Trondheim"),
+(21, 120, "Dobbeltspor", "Steinkjer", "Trondheim");
+
 
 insert into Banestrekning (Banestrekningnavn, Start, Slutt, Fremdriftsenergi) values
 ("Trondheim-Bodø", "Trondheim", "Bodø", "Diesel");
