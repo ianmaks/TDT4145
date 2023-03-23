@@ -10,16 +10,17 @@ cursor = con.cursor()
 stasjon = input("Hvilken stasjon vil du ha togruter for?")
 ukedag = input("Hvilken ukedag ønsker du å sjekke?")
 
-cursor.execute(f"Select Ukedag, RuteInnom.Stasjonsnavn, TogRute.TogruteID \
+cursor.execute(f"Select DISTINCT TogRute.TogruteID \
                From TogruteForekomst join TogRute on (TogruteForekomst.TogruteID = TogRute.TogruteID) \
                join RuteInnom on (TogruteForekomst.TogruteID = RuteInnom.TogruteID) \
-               Where Ukedag == '{ukedag}' AND RuteInnom.Stasjonsnavn == '{stasjon}';")
+               Where Ukedag == '{ukedag}' AND (RuteInnom.Stasjonsnavn == '{stasjon}' OR TogRute.StartStasjon == '{stasjon}' OR TogRute.EndeStasjon == '{stasjon}') ;")
+               
 results = cursor.fetchall()
 
 def FormatertSvar():
     s = (f"Togruter som er gjennom {stasjon} på {ukedag}: \n")
     for i in range(0,len(results)):
-        s += (f"{results[i][2]}\n")
+        s += (f"{results[i][0]}\n")
     return s
 
 print(FormatertSvar())
