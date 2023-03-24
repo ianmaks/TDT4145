@@ -10,10 +10,14 @@ cursor = con.cursor()
 stasjon = input("Hvilken stasjon vil du ha togruter for?")
 ukedag = input("Hvilken ukedag ønsker du å sjekke?")
 
-cursor.execute(f"Select DISTINCT TogRute.TogruteID \
-               From TogruteForekomst join TogRute on (TogruteForekomst.TogruteID = TogRute.TogruteID) \
-               join RuteInnom on (TogruteForekomst.TogruteID = RuteInnom.TogruteID) \
-               Where Ukedag == '{ukedag}' AND (RuteInnom.Stasjonsnavn == '{stasjon}' OR TogRute.StartStasjon == '{stasjon}' OR TogRute.EndeStasjon == '{stasjon}') ;")
+cursor.execute(f"""Select DISTINCT TogRute.TogruteID 
+               From TogruteForekomst join TogRute on (TogruteForekomst.TogruteID = TogRute.TogruteID)
+               join RuteInnom on (TogruteForekomst.TogruteID = RuteInnom.TogruteID)
+               Where Ukedag == :ukedag AND 
+               (RuteInnom.Stasjonsnavn == :stasjon 
+                OR TogRute.StartStasjon == :stasjon 
+                OR TogRute.EndeStasjon == :stasjon );"""
+               ,{"ukedag": ukedag,"stasjon": stasjon})
                
 results = cursor.fetchall()
 
