@@ -40,15 +40,21 @@ cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag
                 FROM RuteInnom
                 ) RuteInnomSlutt ON (TogRute.TogruteID = RuteInnomSlutt.TogruteID)
                 WHERE ((
-                (Ukedag = '{ukedag(dato)}' AND (TogRute.AvgangsTid >= '{klokkeslett}' OR RuteInnomStart.AvgangsTid >= '{klokkeslett}')) 
-                OR Ukedag = '{nesteukedag(dato)}')
-                AND ((TogRute.StartStasjon = '{startStasjon}' AND TogRute.EndeStasjon = '{sluttStasjon}')
-                OR (TogRute.StartStasjon = '{startStasjon}' AND RuteInnomSlutt.Stasjonsnavn = '{sluttStasjon}')
-                OR (TogRute.EndeStasjon = '{sluttStasjon}' AND RuteInnomStart.Stasjonsnavn = '{startStasjon}')
-                OR (RuteInnomStart.Stasjonsnavn = '{startStasjon}' AND RuteInnomSlutt.Stasjonsnavn = '{sluttStasjon}' 
+                (Ukedag = :ukedag AND (TogRute.AvgangsTid >= :klokkeslett OR RuteInnomStart.AvgangsTid >= :klokkeslett)) 
+                OR Ukedag = :nesteukedag)
+                AND ((TogRute.StartStasjon = :startStasjon AND TogRute.EndeStasjon = :sluttStasjon)
+                OR (TogRute.StartStasjon = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon)
+                OR (TogRute.EndeStasjon = :sluttStasjon AND RuteInnomStart.Stasjonsnavn = :startStasjon)
+                OR (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon 
                 AND RuteInnomStart.TogruteID = RuteInnomSlutt.TogruteID 
                 )))
-                ORDER BY TogRute.AvgangsTid, RuteInnomStart.AvgangsTid;""")
+                ORDER BY TogRute.AvgangsTid, RuteInnomStart.AvgangsTid;""", 
+                {"klokkeslett": klokkeslett,
+                 "ukedag": ukedag(dato),
+                 "nesteukedag": nesteukedag(dato),
+                 "startStasjon": startStasjon,
+                 "sluttStasjon": sluttStasjon,
+                 })
 results = cursor.fetchall()
 
 
