@@ -21,7 +21,7 @@ def check_avail(checks):
     OR (Delstrekning.Endestasjon = '{checks[1]}') 
     OR (StrekningInnom.Stasjonsnavn =  '{checks[0]}') 
     OR (StrekningInnom.Stasjonsnavn = '{checks[1]}'))
-    SELECT SUM(Plasser)       
+    SELECT DelstrekningID, Plasser, SUM(Plasser)       
     FROM   Orders
 
     """)
