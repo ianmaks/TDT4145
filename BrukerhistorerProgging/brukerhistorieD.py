@@ -6,22 +6,25 @@
 import sqlite3
 import datetime
 
+dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag','Mandag']
 def ukedag(dato):
-    dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag']
-
     dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
     ukedagsnummer = dateObj.weekday()
     return dager[ukedagsnummer]
 
 def nesteukedag(dato):
-    dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag','Mandag']
-
     dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
     ukedagsnummer = dateObj.weekday()+1
     return dager[ukedagsnummer]
-#this functions sorts the list in format [('Trondheim-Bodø-dagtog', 'Fredag', '13:20:00'), ('Trondheim-Bodø-nattog', 'Fredag', '04:41:00'), ('Trondheim-Bodø-nattog', 'Lørdag', '04:41:00')], by second element dominate and then by third element
-def sortedbytime(results): 
-    return results
+
+def sortedbytime(results):  
+    out=[]
+    results.sort(key=lambda x: x[2])
+    for k in dager:
+        for i in results:
+            if i[1]==k:
+                out.append(i)
+    return out
     
 
 
