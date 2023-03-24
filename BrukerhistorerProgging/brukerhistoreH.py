@@ -13,12 +13,12 @@ cursor = con.cursor()
 
 todays_date = date.today().strftime('%Y-%m-%d')
 
-cursor.execute(f" Select KundeOrdre.Ordrenummer, KundeOrdre.Dag, Billett.BillettID, Delstrekning.StartStasjon, Delstrekning.Endestasjon, TogruteForekomst.ForekomstID, TogruteForekomst.Ukedag \
-               From KundeOrdre join Billett on (KundeOrdre.Ordrenummer = Billett.Ordrenummer) \
-               join HarPlass on (Billett.BillettID = HarPlass.BillettID) \
-               join TogruteForekomst on (Harplass.ForekomstID = TogruteForekomst.ForekomstID) \
-               join Delstrekning on (Billett.DelstrekningID = Delstrekning.DelstrekningID) \
-               Where KundeOrdre.Kundenummer == '{kundenummer}' AND KundeOrdre.Dag >= '{todays_date}';")
+cursor.execute(f""" Select KundeOrdre.Ordrenummer, KundeOrdre.Dag, Billett.BillettID, Delstrekning.StartStasjon, Delstrekning.Endestasjon, TogruteForekomst.ForekomstID, TogruteForekomst.Ukedag \
+               From KundeOrdre join Billett on (KundeOrdre.Ordrenummer = Billett.Ordrenummer)
+               join HarPlass on (Billett.BillettID = HarPlass.BillettID)
+               join TogruteForekomst on (Harplass.ForekomstID = TogruteForekomst.ForekomstID)
+               join Delstrekning on (Billett.DelstrekningID = Delstrekning.DelstrekningID)
+               Where KundeOrdre.Kundenummer == :kundenummer AND KundeOrdre.Dag >= :todays_date ;""",{"kundenummer": kundenummer, "todays_date": todays_date})
 results = cursor.fetchall()
 
 
