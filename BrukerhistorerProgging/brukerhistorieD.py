@@ -82,21 +82,3 @@ print(FormaterSvar())
 con.close()
 
 
-#"Select DISTINCT Togrute.TogruteID , TogruteForekomst.Ukedag from Togrute\
-#join TogruteForekomst ON (TogruteForekomst.TogruteID = TogRute.TogruteID) \
-#join ( \
-#Select RuteInnom.Stasjonsnavn, RuteInnom.TogruteID, RuteInnom.AvgangsTid, Delstrekning.DelstrekningID\
-#From RuteInnom join Delstrekning ON (Delstrekning.StartStasjon = RuteInnom.Stasjonsnavn)) \
-#RuteInnomStart ON (TogRute.TogruteID = RuteInnomStart.TogruteID)\
-#join ( \
-#Select RuteInnom.Stasjonsnavn, RuteInnom.TogruteID, Delstrekning.DelstrekningID\
-#From RuteInnom join Delstrekning ON (Delstrekning.EndeStasjon = RuteInnom.Stasjonsnavn)) \
-#RuteInnomSlutt ON (TogRute.TogruteID = RuteInnomSlutt.TogruteID)\
-#where (((Ukedag == '{ukedag(dato)}' AND (TogRute.AvgangsTid >= '{klokkeslett}' \
-#OR RuteInnomStart.AvgangsTid >= '{klokkeslett}')) OR Ukedag == '{nesteukedag(dato)}')) \
-#and ((TogRute.StartStasjon = '{startStasjon}' and TogRute.EndeStasjon = '{sluttStasjon}') \
-#OR (TogRute.StartStasjon = '{startStasjon}' AND RuteInnomSlutt.Stasjonsnavn = '{sluttStasjon}') \
-#OR (TogRute.EndeStasjon = '{sluttStasjon}' AND RuteInnomStart.Stasjonsnavn = '{startStasjon}')\
-#OR (RuteInnomStart.Stasjonsnavn = '{startStasjon}' AND RuteInnomSlutt.Stasjonsnavn = '{sluttStasjon}' \
-#AND RuteInnomStart.DelstrekningID = RuteInnomSlutt.DelstrekningID ))\
-#Order by TogRute.AvgangsTid, RuteInnomStart.AvgangsTid;")
