@@ -6,18 +6,8 @@ CREATE TABLE Jernbanestasjon (
 
 CREATE TABLE TogRute (
     TogruteID varchar(255) NOT NULL,
-    Startstasjon varchar(255) NOT NULL,
-    Endestasjon varchar(255) NOT NULL,
     Operatør varchar(255) NOT NULL,
-    AvgangsTid varchar(255),
-    AnkomstTid varchar(255),
-    CONSTRAINT PK PRIMARY KEY (TogruteID),
-    CONSTRAINT FK1 FOREIGN KEY (Startstasjon) REFERENCES Jernbanestasjon(Stasjonsnavn)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
-    CONSTRAINT FK2 FOREIGN KEY (Endestasjon) REFERENCES Jernbanestasjon(Stasjonsnavn)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+    CONSTRAINT PK PRIMARY KEY (TogruteID)
 );
 
 CREATE TABLE VognType (
