@@ -31,5 +31,3 @@ def FormatertSvar():
 print(FormatertSvar())
 con.close()
 
-#dato = datetime.strptime(results[i][1], '%Y-%m-%d')
-#       if(dato.date() > today):
