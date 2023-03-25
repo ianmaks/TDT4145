@@ -6,7 +6,7 @@
 import sqlite3
 import datetime
 
-dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag','Mandag']
+dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag']
 def ukedag(dato):
     dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
     ukedagsnummer = dateObj.weekday()
@@ -25,7 +25,6 @@ def sortedbytime(results):
         for i in results:
             out.append(i) if i[1]==k else None
     return out
-    
 
 
 def FormaterSvar(results):
@@ -72,18 +71,17 @@ cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  
                 ON (TogRute.TogruteID = RuteInnomStart.TogruteID) 
                 
                 WHERE ((Ukedag = :ukedag AND (RuteInnomStart.AvgangsTid >= :klokkeslett) OR Ukedag = :nesteukedag)
-                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon) 
-                AND RuteInnomStart.AvgangsTid < RuteInnomSlutt.AnkomstTid);""", 
+                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon)
+                AND (RuteInnomStart.Indeks < RuteInnomSlutt.Indeks))
+                ;""", 
                 {"klokkeslett": klokkeslett,
                  "ukedag": ukedag(dato),
                  "nesteukedag": nesteukedag(dato),
                  "startStasjon": startStasjon,
-                 "sluttStasjon": sluttStasjon,
+                 "sluttStasjon": sluttStasjon
                  })
 results = cursor.fetchall()
 
-
-print(results)
-##print(FormaterSvar(results))
+print(FormaterSvar(results))
 con.close()
 

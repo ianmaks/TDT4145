@@ -138,6 +138,7 @@ CREATE TABLE RuteInnom(
     Stasjonsnavn varchar(255) NOT NULL,
     AnkomstTid Varchar(255),
     AvgangsTid Varchar(255),
+    Indeks int NOT NULL,
     CONSTRAINT PK PRIMARY KEY (TogruteID, Stasjonsnavn),
     CONSTRAINT FK1 FOREIGN KEY (TogruteID) REFERENCES Togrute(TogruteID)
     ON UPDATE CASCADE

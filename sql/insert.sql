@@ -77,23 +77,23 @@ insert into TogRute (TogruteID, Operatør) values
 ("Trondheim-Bodø-nattog", "SJ"),
 ("Mo i Rana-Trondheim-morgentog","SJ");
 
-insert into RuteInnom (TogRuteID, Stasjonsnavn, AnkomstTid, AvgangsTid) values
-("Trondheim-Bodø-dagtog", "Trondheim", NULL, "07:49:00"),
-("Trondheim-Bodø-dagtog", "Steinkjer", "09:49:00", "09:51:00"),
-("Trondheim-Bodø-dagtog", "Mosjøen", "13:18:00", "13:20:00"),
-("Trondheim-Bodø-dagtog", "Mo i Rana", "14:29:00", "14:31:00"),
-("Trondheim-Bodø-dagtog", "Fauske", "16:47:00", "16:49:00"),
-("Trondheim-Bodø-dagtog", "Bodø", "17:34:00", NULL),
-("Trondheim-Bodø-nattog", "Trondheim", NULL, "23:05:00"),
-("Trondheim-Bodø-nattog", "Steinkjer", "00:55:00", "00:57:00"),
-("Trondheim-Bodø-nattog", "Mosjøen", "04:39:00", "04:41:00"),
-("Trondheim-Bodø-nattog", "Mo i Rana", "05:53:00", "05:55:00"),
-("Trondheim-Bodø-nattog", "Fauske", "08:17:00", "08:19:00"),
-("Trondheim-Bodø-nattog", "Bodø","09:05:00", NULL),
-("Mo i Rana-Trondheim-morgentog", "Mo i Rana", NULL, "08:11:00"),
-("Mo i Rana-Trondheim-morgentog", "Mosjøen", "09:12:00", "09:14:00"),
-("Mo i Rana-Trondheim-morgentog", "Steinkjer", "12:29:00", "12:31:00"),
-("Mo i Rana-Trondheim-morgentog", "Trondheim", "14:13:00",NULL);
+insert into RuteInnom (TogRuteID, Stasjonsnavn, AnkomstTid, AvgangsTid, Indeks) values
+("Trondheim-Bodø-dagtog", "Trondheim", NULL, "07:49:00", 0),
+("Trondheim-Bodø-dagtog", "Steinkjer", "09:49:00", "09:51:00", 1),
+("Trondheim-Bodø-dagtog", "Mosjøen", "13:18:00", "13:20:00", 2),
+("Trondheim-Bodø-dagtog", "Mo i Rana", "14:29:00", "14:31:00", 3),
+("Trondheim-Bodø-dagtog", "Fauske", "16:47:00", "16:49:00",4),
+("Trondheim-Bodø-dagtog", "Bodø", "17:34:00", NULL, 5),
+("Trondheim-Bodø-nattog", "Trondheim", NULL, "23:05:00",0),
+("Trondheim-Bodø-nattog", "Steinkjer", "00:55:00", "00:57:00",1),
+("Trondheim-Bodø-nattog", "Mosjøen", "04:39:00", "04:41:00",2),
+("Trondheim-Bodø-nattog", "Mo i Rana", "05:53:00", "05:55:00",3),
+("Trondheim-Bodø-nattog", "Fauske", "08:17:00", "08:19:00",4),
+("Trondheim-Bodø-nattog", "Bodø","09:05:00", NULL,5),
+("Mo i Rana-Trondheim-morgentog", "Mo i Rana", NULL, "08:11:00",0),
+("Mo i Rana-Trondheim-morgentog", "Mosjøen", "09:12:00", "09:14:00",1),
+("Mo i Rana-Trondheim-morgentog", "Steinkjer", "12:29:00", "12:31:00",2),
+("Mo i Rana-Trondheim-morgentog", "Trondheim", "14:13:00",NULL,3);
 
 insert into TogruteForekomst (ForekomstID, Ukedag, TogruteID) values
 ("tro-bod-dag-man", "Mandag", "Trondheim-Bodø-dagtog"),
