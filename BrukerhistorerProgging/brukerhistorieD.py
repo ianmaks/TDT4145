@@ -22,8 +22,7 @@ def sortedbytime(results):
     results.sort(key=lambda x: x[2])
     for k in dager:
         for i in results:
-            if i[1]==k:
-                out.append(i)
+            out.append(i) if i[1]==k else None
     return out
     
 
