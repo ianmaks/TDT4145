@@ -5,26 +5,34 @@
 import sqlite3
 import itertools
 
+togruter = ['Trondheim-Bodø-dagtog', 'Trondheim-Bodø-nattog', 'Mo i Rana-Trondheim-morgentog']
 
 def check_avail(checks):
     cursor.execute(f"""
     
     WITH Orders
-	AS (SELECT DISTINCT Delstrekning.DelstrekningID, HarPlass.Plasser
+	AS (
+    SELECT DISTINCT Billett.BillettID, Delstrekning.DelstrekningID, HarPlass.Plasser, TogruteForekomst.Ukedag
 	FROM   Billett
     JOIN HarPlass on Billett.BillettID = HarPlass.BillettID
     JOIN TogruteForekomst on HarPlass.ForekomstID = TogruteForekomst.ForekomstID 
     JOIN TogRute on TogruteForekomst.TogruteID = TogRute.TogruteID 
     JOIN Delstrekning on Delstrekning.DelstrekningID = Billett.DelstrekningID 
     LEFT JOIN StrekningInnom on Delstrekning.DelstrekningID = StrekningInnom.DelstrekningID
-    where (Delstrekning.StartStasjon = '{checks[0]}')
-    OR (Delstrekning.Endestasjon = '{checks[1]}') 
-    OR (StrekningInnom.Stasjonsnavn =  '{checks[0]}') 
-    OR (StrekningInnom.Stasjonsnavn = '{checks[1]}'))
-    SELECT DelstrekningID, Plasser, SUM(Plasser)       
+    where (Delstrekning.StartStasjon = '{checks[0]}'
+    OR Delstrekning.Endestasjon = '{checks[1]}'
+    OR StrekningInnom.Stasjonsnavn =  '{checks[0]}'
+    OR StrekningInnom.Stasjonsnavn = '{checks[1]}')
+    AND TogRute.TogruteID = '{togrute}'
+    AND TogruteForekomst.Ukedag = '{ukedag}'
+
+    )
+    SELECT *   
     FROM   Orders
 
     """)
+    # BillettID, Ukedag, SUM(Plasser)
+
     
     results = cursor.fetchall()
 
@@ -36,47 +44,34 @@ def check_avail(checks):
 con = sqlite3.connect("sql/tog.db")
 cursor = con.cursor()
 
-kundenummer=input("Legg inn kundenummer: ")
-print("Velg togrute: \n (1) Trondheim-Bodø-dagtog \n (2) Trondheim-Bodø-nattog \n (3) Mo i Rana-Trondheim-morgentog")
-togruter = ['Trondheim-Bodø-dagtog', 'Trondheim-Bodø-nattog', 'Mo i Rana-Trondheim-morgentog']
-togrute = togruter[int(input("Togrute: "))]
+# VELG STASJONSREKKEFØLGE BASERT PÅ TOGRUTE
+def set_checks(togrute):
+    checks = []
+    if togrute == 'Mo i Rana-Trondheim-morgentog':
+        stasjoner = ['Mo i Rana', 'Mosjøen', 'Steinkjer', 'Trondheim']
+        check_start = stasjoner.index(f"{start}")
+        check_slutt = stasjoner.index(f"{slutt}")
+        checks = list(itertools.combinations(stasjoner[check_start:check_slutt+1], 2))
 
+    else:
+        stasjoner = ["Trondheim", "Steinkjer", "Mosjøen", "Mo i Rana", "Fauske", "Bodø"]
+        check_start = stasjoner.index(f"{start}")
+        check_slutt = stasjoner.index(f"{slutt}")
+        for i in range(check_start, check_slutt):
+            checks.append((stasjoner[i], stasjoner[i+1]))
+        print(checks)
+    return checks
+
+# KUNDESPØRRINGER
+kundenummer=input("Legg inn kundenummer: ")
+togrute = togruter[int(input("Velg togrute: \n (1) Trondheim-Bodø-dagtog \n (2) Trondheim-Bodø-nattog \n (3) Mo i Rana-Trondheim-morgentog \n Togrute: "))]
 start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
+ukedag=input("Hvilken ukedag vil du reise på? ")
 
 
-
-#cursor.execute(f"Insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ()")
-
-if togrute == 'Mo i Rana-Trondheim-morgentog':
-    stasjoner = ['Mo i Rana', 'Mosjøen', 'Steinkjer', 'Trondheim']
-    check_start = stasjoner.index(f"{start}")
-    check_slutt = stasjoner.index(f"{slutt}")
-    checks = list(itertools.combinations(stasjoner[check_start:check_slutt+1], 2))
-
-else:
-    stasjoner = ["Trondheim", "Steinkjer", "Mosjøen", "Mo i Rana", "Fauske", "Bodø"]
-    check_start = stasjoner.index(f"{start}")
-    check_slutt = stasjoner.index(f"{slutt}")
-    checks = list(itertools.combinations(stasjoner[check_start:check_slutt+1], 2))
-
-for i in checks:
+for i in set_checks(togrute):
     check_avail(i)
-
-
-
-
-
-#cursor.execute(f"SELECT distinct TogRute.Startstasjon,TogRute.Endestasjon, RI1.Stasjonsnavn, RI2.Stasjonsnavn  from TogruteForekomst join TogRute on TogruteForekomst.TogruteID = TogRute.TogruteID join RuteInnom as RI1 on TogruteForekomst.TogruteID = RI1.TogruteID join RuteInnom as RI2 on TogruteForekomst.TogruteID = RI2.TogruteID join Delstrekning where (Delstrekning.StartStasjon = RI1.Stasjonsnavn and Delstrekning.Endestasjon = RI2.Stasjonsnavn)")
-#               (Delstrekning.StartStasjon = TogRute.Startstasjon and Delstrekning.Endestasjon = RuteInnom.Stasjonsnavn) or (Delstrekning.StartStasjon = RuteInnom.Stasjonsnavn and Delstrekning.Endestasjon = TogRute.Endestasjon) or (Delstrekning.StartStasjon = RuteInnom.Stasjonsnavn and Delstrekning.Endestasjon = RuteInnom.Stasjonsnavn)")
-#Delstrekning.DelstrekningID,  TogruteForekomst.ForekomstID, TogruteForekomst.Ukedag
-#on 
-# results = cursor.fetchall()
-
-# for i in results:
-#     print(i)
-
-
 
 #kjope=input("angi hvilken du ønsker å kjøpe")
 

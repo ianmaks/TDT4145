@@ -34,15 +34,15 @@ def FormaterSvar(results):
     f = []
     i = 0
     #Luker ut feilen der mellomstasjoner i Mo i Rana-Trondheim-morgentog inkluderer alle togreiser
-    for i in range(0,len(results)):
-        if('Mo i Rana-Trondheim-morgentog' in results[i]):
-            f.append(results[i])
-            i+=1
-    if f:
-        for i in range(0, len(f)):
-            s += (f"{f[i][0]}  Dag: {f[i][1]}  Tid: {results[i][2]}\n")
-            i+=1
-        return s
+    # for i in range(0,len(results)):
+    #     if('Mo i Rana-Trondheim-morgentog' in results[i]):
+    #         f.append(results[i])
+    #         i+=1
+    # if f:
+    #     for i in range(0, len(f)):
+    #         s += (f"{f[i][0]}  Dag: {f[i][1]}  Tid: {results[i][2]}\n")
+    #         i+=1
+    #     return s
     #alle andre tilfeller
     for i in range(0,len(results)):
         s += (f"{results[i][0]}  Dag: {results[i][1]} Tid: {results[i][2]}\n")
