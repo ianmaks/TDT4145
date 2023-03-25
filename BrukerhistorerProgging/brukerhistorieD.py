@@ -13,9 +13,10 @@ def ukedag(dato):
     return dager[ukedagsnummer]
 
 def nesteukedag(dato):
+    dagene = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag', "Mandag"]
     dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
     ukedagsnummer = dateObj.weekday()+1
-    return dager[ukedagsnummer]
+    return dagene[ukedagsnummer]
 
 def sortedbytime(results):  
     out=[]
