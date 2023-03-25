@@ -59,20 +59,20 @@ dato= input("dato f eks.(31.03.2023): ")
 klokkeslett= input("klokkeslett f eks. (07:49:00): ")
 
 cursor = con.cursor()
-cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  RuteInnom.AvgangsTid
+cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  RuteInnomStart.AvgangsTid
                 FROM Togrute 
                 
                 JOIN TogruteForekomst 
                 ON (TogruteForekomst.TogruteID = TogRute.TogruteID) 
                 
-                JOIN (SELECT RuteInnom.Stasjonsnavn, RuteInnom.TogruteID, RuteInnom.AvgangsTid FROM RuteInnom ) RuteInnom 
-                ON (TogRute.TogruteID = RuteInnom.TogruteID) 
+                JOIN (Select * From RuteInnom) RuteInnomSlutt
+                ON (TogRute.TogruteID = RuteInnomSlutt.TogruteID) 
+
+                JOIN (Select * From RuteInnom) RuteInnomStart
+                ON (TogRute.TogruteID = RuteInnomStart.TogruteID) 
                 
-                
-                WHERE (((Ukedag = :ukedag AND (RuteInnomStart.AvgangsTid >= :klokkeslett)
-                OR Ukedag = :nesteukedag)
-                AND (RuteInnom.Stasjonsnavn = :startStasjon AND RuteInnom.Stasjonsnavn = :sluttStasjon 
-                AND RuteInnom.TogruteID = RuteInnom.TogruteID));""", 
+                WHERE ((Ukedag = :ukedag AND (RuteInnomStart.AvgangsTid >= :klokkeslett) OR Ukedag = :nesteukedag)
+                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon));""", 
                 {"klokkeslett": klokkeslett,
                  "ukedag": ukedag(dato),
                  "nesteukedag": nesteukedag(dato),
