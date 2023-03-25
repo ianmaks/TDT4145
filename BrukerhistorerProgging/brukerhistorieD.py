@@ -72,7 +72,8 @@ cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  
                 ON (TogRute.TogruteID = RuteInnomStart.TogruteID) 
                 
                 WHERE ((Ukedag = :ukedag AND (RuteInnomStart.AvgangsTid >= :klokkeslett) OR Ukedag = :nesteukedag)
-                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon));""", 
+                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon) 
+                AND RuteInnomStart.AvgangsTid < RuteInnomSlutt.AnkomstTid);""", 
                 {"klokkeslett": klokkeslett,
                  "ukedag": ukedag(dato),
                  "nesteukedag": nesteukedag(dato),
@@ -83,6 +84,6 @@ results = cursor.fetchall()
 
 
 print(results)
-print(FormaterSvar(results))
+##print(FormaterSvar(results))
 con.close()
 
