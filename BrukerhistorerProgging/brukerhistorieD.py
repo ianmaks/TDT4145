@@ -59,27 +59,20 @@ dato= input("dato f eks.(31.03.2023): ")
 klokkeslett= input("klokkeslett f eks. (07:49:00): ")
 
 cursor = con.cursor()
-cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  RuteInnomStart.AvgangsTid
+cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  RuteInnom.AvgangsTid
                 FROM Togrute 
-                JOIN TogruteForekomst ON (TogruteForekomst.TogruteID = TogRute.TogruteID) 
-                JOIN ( 
-                SELECT RuteInnom.Stasjonsnavn, RuteInnom.TogruteID, RuteInnom.AvgangsTid 
-                FROM RuteInnom 
-                ) RuteInnomStart ON (TogRute.TogruteID = RuteInnomStart.TogruteID) 
-                JOIN ( 
-                SELECT RuteInnom.Stasjonsnavn, RuteInnom.TogruteID 
-                FROM RuteInnom
-                ) RuteInnomSlutt ON (TogRute.TogruteID = RuteInnomSlutt.TogruteID)
-                WHERE ((
-                (Ukedag = :ukedag AND (TogRute.AvgangsTid >= :klokkeslett OR RuteInnomStart.AvgangsTid >= :klokkeslett)) 
+                
+                JOIN TogruteForekomst 
+                ON (TogruteForekomst.TogruteID = TogRute.TogruteID) 
+                
+                JOIN (SELECT RuteInnom.Stasjonsnavn, RuteInnom.TogruteID, RuteInnom.AvgangsTid FROM RuteInnom ) RuteInnom 
+                ON (TogRute.TogruteID = RuteInnom.TogruteID) 
+                
+                
+                WHERE (((Ukedag = :ukedag AND (RuteInnomStart.AvgangsTid >= :klokkeslett)
                 OR Ukedag = :nesteukedag)
-                AND ((TogRute.StartStasjon = :startStasjon AND TogRute.EndeStasjon = :sluttStasjon)
-                OR (TogRute.StartStasjon = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon)
-                OR (TogRute.EndeStasjon = :sluttStasjon AND RuteInnomStart.Stasjonsnavn = :startStasjon)
-                OR (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon 
-                AND RuteInnomStart.TogruteID = RuteInnomSlutt.TogruteID 
-                )))
-                ;""", 
+                AND (RuteInnom.Stasjonsnavn = :startStasjon AND RuteInnom.Stasjonsnavn = :sluttStasjon 
+                AND RuteInnom.TogruteID = RuteInnom.TogruteID));""", 
                 {"klokkeslett": klokkeslett,
                  "ukedag": ukedag(dato),
                  "nesteukedag": nesteukedag(dato),
@@ -92,5 +85,4 @@ results = cursor.fetchall()
 print(results)
 print(FormaterSvar(results))
 con.close()
-
 
