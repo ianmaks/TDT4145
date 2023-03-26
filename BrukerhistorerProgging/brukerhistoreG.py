@@ -113,18 +113,18 @@ def fullfør_bestilling(antall_plasser):
     cursor = con.cursor()
     cursor.execute(f"""insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) 
                     values (:userID, date('now'), time('now'), :kundenummer);""",
-                    {"userID": userID,
+                    {"userID": TicketID,
                      "kundenummer": kundenummer})
     
     cursor.execute(f"""insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) 
                     values (:userID, :userID, :delstrekning, :vogn)""",
-                    {"userID": userID,
+                    {"userID": TicketID,
                      "delstrekning": delstrekning,
                      "vogn": vogn});
     
     cursor.execute(f"""insert into HarPlass (BillettID, Plasser, ForekomstID) 
                     values (:userID, :antall_plasser, :forekomstID)""",
-                    {"userID": userID,
+                    {"userID": TicketID,
                      "antall_plasser": antall_plasser,
                      "forekomstID": forekomstID});
 
@@ -154,7 +154,7 @@ def beregn_ledige_plasser():
     cursor = con.cursor()
     cursor.execute(f""""
     
-    SELECT  VognType.VognNavn, VognType.AntallRader, VognTypeAntallSeterPerRad, VognType.AntallKupeer
+    SELECT  VognType.VognNavn, VognType.AntallRader*VognType.AntallSeterPerRad AS AntallSeter, VognType.AntallKupeer, SUM(AntallSeter)
 	FROM
     TogRute 
     JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
@@ -162,6 +162,7 @@ def beregn_ledige_plasser():
     WHERE VognType.VognType = '{vogn_type}' 
     AND TogRute.TogruteID = '{togrute}'
     """)
+
 
 
 # KUNDESPØRRINGER
