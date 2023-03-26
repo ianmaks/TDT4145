@@ -41,7 +41,7 @@ def check_avail(checks):
      "checksone": checks[1],
      "togrute": togrute,
      "dag": reisedato,
-     "vogn": velg_vogn
+     "vogn": velg_vogn()
      })
     results = cursor.fetchall()
     con.close()
