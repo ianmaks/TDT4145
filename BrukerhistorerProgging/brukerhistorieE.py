@@ -2,7 +2,7 @@
 import sqlite3
 
 def newUserID():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"SELECT MAX(Kundenummer) FROM Kunde;")
     results = cursor.fetchall()
@@ -15,7 +15,7 @@ epost=input("Legg inn epost: ")
 mobilnummer=input("Legg inn mobilnummer: ")
 kundenummer=newUserID()
 
-con = sqlite3.connect("sql/tog.db")
+con = sqlite3.connect("tog.db")
 cursor = con.cursor()
 cursor.execute(f"""INSERT INTO Kunde (Kundenummer, Navn, Epost, Mobilnummer) 
                 VALUES (:kundenummer,:navn ,:epost ,:mobilnummer);""",{"navn": navn,"epost": epost,"mobilnummer": mobilnummer,"kundenummer": kundenummer})

@@ -11,7 +11,7 @@ togruter = ['dummy', 'Trondheim-Bodø-dagtog', 'Trondheim-Bodø-nattog', 'Mo i R
 
 # SJEKKE ANTALL SETER I BRUK PÅ EN REISE
 def check_avail(checks):
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"""
     WITH Orders
@@ -57,7 +57,7 @@ def ukedag(dato):
     return dager[ukedagsnummer]
 
 def new_TicketID():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"SELECT MAX(BillettID) FROM Billett;")
     results = cursor.fetchall()
@@ -65,7 +65,7 @@ def new_TicketID():
     return 1 if results[0][0] == None else results[0][0]+1
 
 def hent_delstrekning():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"select DelstrekningID as targetDelstrekning from Delstrekning where Delstrekning.StartStasjon = :start and Delstrekning.Endestasjon = :slutt;",
                    {"start": start,
@@ -77,7 +77,7 @@ def hent_delstrekning():
     return results[0][0]
 
 def hent_forekomstID():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"select ForekomstID from TogruteForekomst where TogruteID = :togrute and Ukedag = :ukedag",
                    {"togrute": togrute,
@@ -88,7 +88,7 @@ def hent_forekomstID():
     return results[0][0]
 
 def hent_avgangsTid():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"Select AvgangsTid from RuteInnom Where TogruteID = :togrute AND Stasjonsnavn = :start",
                    {"togrute": togrute,
@@ -119,7 +119,7 @@ def fullfør_bestilling(antall_plasser):
         print(f"{start} til {slutt} er en ugyldig strekning")
         exit()
     tid = (str) (hent_avgangsTid())
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"""insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) 
                     values (:ordrenummer, :reisedato, :tid , :kundenummer);""",
@@ -163,7 +163,7 @@ def set_checks(togrute):
     return checks
 
 def beregn_ledige_seter():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"""
     
@@ -187,7 +187,7 @@ def beregn_ledige_seter():
     return results[0][0]
 
 def beregn_ledige_senger():
-    con = sqlite3.connect("sql/tog.db")
+    con = sqlite3.connect("tog.db")
     cursor = con.cursor()
     cursor.execute(f"""
     

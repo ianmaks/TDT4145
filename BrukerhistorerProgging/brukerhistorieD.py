@@ -37,7 +37,7 @@ def FormaterSvar(results):
         return (f"Ingen togreiser går mellom {startStasjon} og {sluttStasjon} i denne tidsperioden")
     return s
 
-con = sqlite3.connect("sql/tog.db")
+con = sqlite3.connect("tog.db")
 
 startStasjon= input("Startstasjon: ")
 sluttStasjon= input("Sluttstasjon: ")

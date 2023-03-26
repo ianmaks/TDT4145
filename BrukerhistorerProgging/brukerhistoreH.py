@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 kundenummer=input("Legg inn kundenummer:")
-con = sqlite3.connect("sql/tog.db")
+con = sqlite3.connect("tog.db")
 cursor = con.cursor()
 
 todays_date = date.today().strftime('%Y-%m-%d')

@@ -5,7 +5,7 @@
 
 
 import sqlite3
-con = sqlite3.connect("sql/tog.db")
+con = sqlite3.connect("tog.db")
 cursor = con.cursor()
 stasjon = input("Hvilken stasjon vil du ha togruter for?")
 ukedag = input("Hvilken ukedag ønsker du å sjekke?")
