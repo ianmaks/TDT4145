@@ -40,7 +40,7 @@ def check_avail(checks):
     {"checksnull": checks[0],
      "checksone": checks[1],
      "togrute": togrute,
-     "dag": reisedato,
+     "ukedag": reisedato,
      "vogn": velg_vogn()
      })
     results = cursor.fetchall()
@@ -235,21 +235,22 @@ vogn_typer = [0, 1, 2]
 vogn_type = 1
 capacity = []
 
-for i in set_checks(togrute):
-    check_avail(i)
+
 
 if togrute == 'Trondheim-Bodø-nattog':
     vogn_type = vogn_typer[int(input("Ønsker du (1) Sittevogn eller (2) Sovevogn? "))]
 
 velg_vogn()
+for i in set_checks(togrute):
+    check_avail(i)
 if togrute == togruter[1] or togrute == togruter[3]:
-    print("Det er {beregn_ledige_seter()} plasser på denne reisen")
+    print(f"Det er {beregn_ledige_seter()} plasser på denne reisen")
     antall_plasser = input("Hvor mange plasser ønsker du å bestille? ")
     if max(capacity) + antall_plasser <= beregn_ledige_seter():
         fullfør_bestilling(antall_plasser)    
 
 else:
-    print("Det er {beregn_ledige_senger()} plasser på denne reisen")
+    print(f"Det er {beregn_ledige_senger()} plasser på denne reisen")
     antall_plasser = input("Hvor mange plasser ønsker du å bestille? ")
     if max(capacity) + antall_plasser <= beregn_ledige_senger():
         fullfør_bestilling(antall_plasser)    
