@@ -17,17 +17,21 @@ def check_avail(checks):
 	AS (
     SELECT DISTINCT Billett.BillettID, Delstrekning.DelstrekningID, HarPlass.Plasser, TogruteForekomst.Ukedag
 	FROM   Billett
+    JOIN KundeOrdre on KundeOrdre.OrdreNummer = Billett.Ordrenummer
     JOIN HarPlass on Billett.BillettID = HarPlass.BillettID
     JOIN TogruteForekomst on HarPlass.ForekomstID = TogruteForekomst.ForekomstID 
     JOIN TogRute on TogruteForekomst.TogruteID = TogRute.TogruteID 
-    JOIN Delstrekning on Delstrekning.DelstrekningID = Billett.DelstrekningID 
+    JOIN Delstrekning on Delstrekning.DelstrekningID = Billett.DelstrekningID
+    JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
+    JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
     LEFT JOIN StrekningInnom on Delstrekning.DelstrekningID = StrekningInnom.DelstrekningID
     where (Delstrekning.StartStasjon = '{checks[0]}'
     OR Delstrekning.Endestasjon = '{checks[1]}'
     OR StrekningInnom.Stasjonsnavn =  '{checks[0]}'
     OR StrekningInnom.Stasjonsnavn = '{checks[1]}')
     AND TogRute.TogruteID = '{togrute}'
-    AND TogruteForekomst.Ukedag = '{ukedag}'
+    AND KundeOrdre.Dag = '{reisedato}'
+    AND VognType.VognType = '{vogn_type}'
     )
     SELECT SUM(Plasser)
     FROM   Orders
@@ -83,14 +87,14 @@ def velg_vogn():
 def fullfør_bestilling(antall_plasser):
     vogn = velg_vogn()
     forekomstID = (str) (hent_forekomstID())
-    userID = (str) (new_TicketID())
+    TicketID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.executescript(f"""
-    insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) values ('{userID}', date('now'), time('now'), '{kundenummer}');
-    insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{userID}', '{userID}', '{delstrekning}', '{vogn}');
-    insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{userID}', '{antall_plasser}', '{forekomstID}');
+    insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) values ('{TicketID}', '{reisedato}', time('now'), '{kundenummer}');
+    insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{TicketID}', '{TicketID}', '{delstrekning}', '{vogn}');
+    insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{TicketID}', '{antall_plasser}', '{forekomstID}');
     """)
 
     con.commit()
@@ -114,6 +118,19 @@ def set_checks(togrute):
             checks.append((stasjoner[i], stasjoner[i+1]))
     return checks
 
+def beregn_ledige_plasser():
+    con = sqlite3.connect("sql/tog.db)")
+    cursor = con.cursor()
+    cursor.execute(f""""
+    
+    SELECT  VognType.VognNavn, VognType.AntallRader, VognTypeAntallSeterPerRad, VognType.AntallKupeer
+	FROM
+    TogRute 
+    JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
+    JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
+    WHERE VognType.VognType = '{vogn_type}' 
+    AND TogRute.TogruteID = '{togrute}'
+    """)
 
 
 # KUNDESPØRRINGER
@@ -121,11 +138,18 @@ kundenummer=input("Legg inn kundenummer: ")
 togrute = togruter[int(input("Velg togrute: \n (1) Trondheim-Bodø-dagtog \n (2) Trondheim-Bodø-nattog \n (3) Mo i Rana-Trondheim-morgentog \n Togrute: "))]
 start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
-ukedag= ukedag(input("Hvilken dato vil du reise på? "))
+reisedato = input("Hvilken dato vil du reise på? ")
+ukedag= ukedag(reisedato)
 
 capacity = []
 for i in set_checks(togrute):
     check_avail(i)
+
+if togrute == 'Trondheim-Bodø-nattog':
+    vogn_typer = [0, 1, 2]
+    vogn_type = vogn_typer[input("Ønsker du (1) Sittevogn eller (2) Sovevogn? ")]
+
+
 if bool(capacity) == False:
     print(f"Det er {10} ledige plasser på denne reisen.")
     antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
