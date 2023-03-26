@@ -25,17 +25,21 @@ def check_avail(checks):
     JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
     JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
     LEFT JOIN StrekningInnom on Delstrekning.DelstrekningID = StrekningInnom.DelstrekningID
-    where (Delstrekning.StartStasjon = '{checks[0]}'
-    OR Delstrekning.Endestasjon = '{checks[1]}'
-    OR StrekningInnom.Stasjonsnavn =  '{checks[0]}'
-    OR StrekningInnom.Stasjonsnavn = '{checks[1]}')
-    AND TogRute.TogruteID = '{togrute}'
-    AND KundeOrdre.Dag = '{reisedato}'
-    AND VognType.VognType = '{vogn_type}'
+    where (Delstrekning.StartStasjon = :checksnull
+    OR Delstrekning.Endestasjon = :checksone
+    OR StrekningInnom.Stasjonsnavn =  :checksnull
+    OR StrekningInnom.Stasjonsnavn = :checksone)
+    AND TogRute.TogruteID = :togrute
+    AND TogruteForekomst.Ukedag = :ukedag
     )
     SELECT SUM(Plasser)
-    FROM   Orders
-    """)
+    FROM   Orders;
+    """,
+    {"checksnull": checks[0],
+     "checksone": checks[1],
+     "togrute": togrute,
+     "ukedag": ukedag
+     })
     results = cursor.fetchall()
     con.close()
     if isinstance(results[0][0], int): 
@@ -60,7 +64,9 @@ def new_TicketID():
 def hent_delstrekning():
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
-    cursor.execute(f"select DelstrekningID as targetDelstrekning from Delstrekning where Delstrekning.StartStasjon = '{start}' and Delstrekning.Endestasjon = '{slutt}';")
+    cursor.execute(f"select DelstrekningID as targetDelstrekning from Delstrekning where Delstrekning.StartStasjon = :start and Delstrekning.Endestasjon = :slutt;",
+                   {"start": start,
+                    "slutt": slutt})
     results = cursor.fetchall()
     con.close()
     return results[0][0]
@@ -68,7 +74,9 @@ def hent_delstrekning():
 def hent_forekomstID():
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
-    cursor.execute(f"select ForekomstID from TogruteForekomst where TogruteID = '{togrute}' and Ukedag = '{ukedag}'")
+    cursor.execute(f"select ForekomstID from TogruteForekomst where TogruteID = :togrute and Ukedag = :ukedag",
+                   {"togrute": togrute,
+                    "ukedag": ukedag})
     results = cursor.fetchall()
     con.close()
     
@@ -77,7 +85,9 @@ def hent_forekomstID():
 def hent_avgangsTid():
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
-    cursor.execute(f"Select AvgangsTid from RuteInnom Where TogruteID = '{togrute}' AND Stasjonsnavn = '{start}'")
+    cursor.execute(f"Select AvgangsTid from RuteInnom Where TogruteID = :togrute AND Stasjonsnavn = :start",
+                   {"togrute": togrute,
+                    "start": start})
     results = cursor.fetchall()
     con.close()
     print(results)
@@ -101,11 +111,22 @@ def fullfør_bestilling(antall_plasser):
     tid = (str) (hent_avgangsTid())
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
-    cursor.executescript(f"""
-    insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) values ('{TicketID}', '{reisedato}', time('now'), '{kundenummer}');
-    insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{TicketID}', '{TicketID}', '{delstrekning}', '{vogn}');
-    insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{TicketID}', '{antall_plasser}', '{forekomstID}');
-    """)
+    cursor.execute(f"""insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) 
+                    values (:userID, date('now'), time('now'), :kundenummer);""",
+                    {"userID": userID,
+                     "kundenummer": kundenummer})
+    
+    cursor.execute(f"""insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) 
+                    values (:userID, :userID, :delstrekning, :vogn)""",
+                    {"userID": userID,
+                     "delstrekning": delstrekning,
+                     "vogn": vogn});
+    
+    cursor.execute(f"""insert into HarPlass (BillettID, Plasser, ForekomstID) 
+                    values (:userID, :antall_plasser, :forekomstID)""",
+                    {"userID": userID,
+                     "antall_plasser": antall_plasser,
+                     "forekomstID": forekomstID});
 
     con.commit()
     con.close()
