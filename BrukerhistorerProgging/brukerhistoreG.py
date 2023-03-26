@@ -161,16 +161,20 @@ def beregn_ledige_plasser():
     cursor = con.cursor()
     cursor.execute(f""""
     
-    SELECT  VognType.VognNavn, VognType.AntallRader, VognTypeAntallSeterPerRad, VognType.AntallKupeer
-	FROM
-    TogRute 
+    With AntallSeter AS (
+	SELECT  VognType.VognNavn, VognType.AntallRader*VognType.AntallSeterPerRad AS TotalSeter
+	FROM TogRute 
     JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
     JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
-    WHERE VognType.VognType = :vogn_type 
+    WHERE VognType.VognType = :vogntype
     AND TogRute.TogruteID = :togrute
+	
+	SELECT SUM(TotalSeter)
+	FROM AntallSeter;
     """,
     {"vogn_type": vogn_type,
      "togrute": togrute})
+
 
 
 # KUNDESPØRRINGER
