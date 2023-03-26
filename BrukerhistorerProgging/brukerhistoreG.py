@@ -112,21 +112,24 @@ def fullfør_bestilling(antall_plasser):
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.execute(f"""insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) 
-                    values (:userID, date('now'), time('now'), :kundenummer);""",
-                    {"userID": userID,
+                    values (:ordrenummer, :reisedato, :tid , :kundenummer);""",
+                    {"ordrenummer": TicketID,
+                     "reisedato": reisedato,
+                     "tid": tid,
                      "kundenummer": kundenummer})
     
     cursor.execute(f"""insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) 
-                    values (:userID, :userID, :delstrekning, :vogn)""",
-                    {"userID": userID,
+                    values (:billetID, :ordrenummer, :delstrekning, :vogn)""",
+                    {"billetID": TicketID,
+                     "ordrenummer": TicketID,
                      "delstrekning": delstrekning,
-                     "vogn": vogn});
+                     "vogn": vogn})
     
     cursor.execute(f"""insert into HarPlass (BillettID, Plasser, ForekomstID) 
-                    values (:userID, :antall_plasser, :forekomstID)""",
-                    {"userID": userID,
+                    values (:billetID, :antall_plasser, :forekomstID)""",
+                    {"billetID": TicketID,
                      "antall_plasser": antall_plasser,
-                     "forekomstID": forekomstID});
+                     "forekomstID": forekomstID})
 
     con.commit()
     con.close()
