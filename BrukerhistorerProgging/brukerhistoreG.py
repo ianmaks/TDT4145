@@ -15,7 +15,7 @@ def check_avail(checks):
     cursor.execute(f"""
     WITH Orders
 	AS (
-    SELECT DISTINCT Billett.BillettID, Delstrekning.DelstrekningID, HarPlass.Plasser, TogruteForekomst.Ukedag
+    SELECT DISTINCT Billett.BillettID, Delstrekning.DelstrekningID, HarPlass.Plasser, TogruteForekomst.Ukedag, Billett.VognNavn
 	FROM   Billett
     JOIN KundeOrdre on KundeOrdre.OrdreNummer = Billett.Ordrenummer
     JOIN HarPlass on Billett.BillettID = HarPlass.BillettID
@@ -31,6 +31,7 @@ def check_avail(checks):
     OR StrekningInnom.Stasjonsnavn = :checksone)
     AND TogRute.TogruteID = :togrute
     AND KundeOrdre.Dag = :ukedag
+    Billett.VognNavn = :vogn
     )
     SELECT SUM(Plasser)
     FROM   Orders;
@@ -38,7 +39,8 @@ def check_avail(checks):
     {"checksnull": checks[0],
      "checksone": checks[1],
      "togrute": togrute,
-     "dag": reisedato
+     "dag": reisedato,
+     "vogn": velg_vogn
      })
     results = cursor.fetchall()
     con.close()
@@ -95,12 +97,7 @@ def hent_avgangsTid():
     return results[0][0]
     
 
-def velg_vogn():
-    if  togrute == 'Trondheim-Bodø-nattog':
-        vogn = 'SJ-sovevogn-1'
-    else:
-        vogn = 'SJ-sittevogn-1'
-    return vogn
+
 
 # BESTILLE BILETTER
 
@@ -110,7 +107,7 @@ def fullfør_bestilling(antall_plasser):
     TicketID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
     if (delstrekning == 0):
-        print(f"{start} til {slutt} er en ygyldig strekning")
+        print(f"{start} til {slutt} er en ugyldig strekning")
         exit()
     tid = (str) (hent_avgangsTid())
     con = sqlite3.connect("sql/tog.db")
@@ -199,6 +196,13 @@ def beregn_ledige_senger():
     con.close()
     return results[0][0]
 
+def velg_vogn():
+    if  togrute == 'Trondheim-Bodø-nattog':
+        vogn = 'SJ-sovevogn-1'
+    else:
+        vogn = 'SJ-sittevogn-1'
+    return vogn
+
 # KUNDESPØRRINGER
 kundenummer=input("Legg inn kundenummer: ")
 togrute = togruter[int(input("Velg togrute: \n (1) Trondheim-Bodø-dagtog \n (2) Trondheim-Bodø-nattog \n (3) Mo i Rana-Trondheim-morgentog \n Togrute: "))]
@@ -206,25 +210,26 @@ start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
 reisedato = input("Hvilken dato vil du reise på? ")
 ukedag= ukedag(reisedato)
-
+vogn_typer = [0, 1, 2]
+vogn_type = 1
 capacity = []
+
+
+
+if togrute == 'Trondheim-Bodø-nattog':
+    vogn_type = vogn_typer[int(input("Ønsker du (1) Sittevogn eller (2) Sovevogn? "))]
 for i in set_checks(togrute):
     check_avail(i)
 
-if togrute == 'Trondheim-Bodø-nattog':
-    vogn_typer = [0, 1, 2]
-    vogn_type = vogn_typer[int(input("Ønsker du (1) Sittevogn eller (2) Sovevogn? "))]
-    
-
-if bool(capacity) == False:
-    print(f"Det er {beregn_ledige_plasser()} ledige plasser på denne reisen.")
-    antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
-    if (int) (antall_plasser) <= beregn_ledige_plasser():
+if bool(capacity) == False and togrute == 'Trondheim-Bodø-nattog':
+    print(f"Det er {beregn_ledige_senger()} ledige plasser på denne reisen.")
+    antall_plasser=input("Hvor mange sengeplasser ønsker du å bestille? ")
+    if (int) (antall_plasser) <= beregn_ledige_senger():
         fullfør_bestilling(antall_plasser)    
 else:
-    print(f"Det er {beregn_ledige_plasser() - max(capacity)} ledige plasser på denne reisen.")
-    if max(capacity) < beregn_ledige_plasser():
+    print(f"Det er {beregn_ledige_seter() - max(capacity)} ledige plasser på denne reisen.")
+    if max(capacity) < beregn_ledige_seter():
         antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
-        if (int) (antall_plasser) + max(capacity) <= beregn_ledige_plasser():
+        if (int) (antall_plasser) + max(capacity) <= beregn_ledige_seter():
             fullfør_bestilling(antall_plasser)    
 print(f"Da har det blitt kjøpt {antall_plasser} biletter mellom {start} og {slutt}")
