@@ -77,23 +77,23 @@ insert into TogRute (TogruteID, Operatør) values
 ("Trondheim-Bodø-nattog", "SJ"),
 ("Mo i Rana-Trondheim-morgentog","SJ");
 
-insert into RuteInnom (TogRuteID, Stasjonsnavn, AnkomstTid, AvgangsTid) values
-("Trondheim-Bodø-dagtog", "Trondheim", NULL, "07:49:00"),
-("Trondheim-Bodø-dagtog", "Steinkjer", "09:49:00", "09:51:00"),
-("Trondheim-Bodø-dagtog", "Mosjøen", "13:18:00", "13:20:00"),
-("Trondheim-Bodø-dagtog", "Mo i Rana", "14:29:00", "14:31:00"),
-("Trondheim-Bodø-dagtog", "Fauske", "16:47:00", "16:49:00"),
-("Trondheim-Bodø-dagtog", "Bodø", "17:34:00", NULL),
-("Trondheim-Bodø-nattog", "Trondheim", NULL, "23:05:00"),
-("Trondheim-Bodø-nattog", "Steinkjer", "00:55:00", "00:57:00"),
-("Trondheim-Bodø-nattog", "Mosjøen", "04:39:00", "04:41:00"),
-("Trondheim-Bodø-nattog", "Mo i Rana", "05:53:00", "05:55:00"),
-("Trondheim-Bodø-nattog", "Fauske", "08:17:00", "08:19:00"),
-("Trondheim-Bodø-nattog", "Bodø","09:05:00", NULL),
-("Mo i Rana-Trondheim-morgentog", "Mo i Rana", NULL, "08:11:00"),
-("Mo i Rana-Trondheim-morgentog", "Mosjøen", "09:12:00", "09:14:00"),
-("Mo i Rana-Trondheim-morgentog", "Steinkjer", "12:29:00", "12:31:00"),
-("Mo i Rana-Trondheim-morgentog", "Trondheim", "14:13:00",NULL);
+insert into RuteInnom (TogRuteID, Stasjonsnavn, AnkomstTid, AvgangsTid, Indeks) values
+("Trondheim-Bodø-dagtog", "Trondheim", NULL, "07:49:00", 0),
+("Trondheim-Bodø-dagtog", "Steinkjer", "09:49:00", "09:51:00", 1),
+("Trondheim-Bodø-dagtog", "Mosjøen", "13:18:00", "13:20:00", 2),
+("Trondheim-Bodø-dagtog", "Mo i Rana", "14:29:00", "14:31:00", 3),
+("Trondheim-Bodø-dagtog", "Fauske", "16:47:00", "16:49:00",4),
+("Trondheim-Bodø-dagtog", "Bodø", "17:34:00", NULL, 5),
+("Trondheim-Bodø-nattog", "Trondheim", NULL, "23:05:00",0),
+("Trondheim-Bodø-nattog", "Steinkjer", "00:55:00", "00:57:00",1),
+("Trondheim-Bodø-nattog", "Mosjøen", "04:39:00", "04:41:00",2),
+("Trondheim-Bodø-nattog", "Mo i Rana", "05:53:00", "05:55:00",3),
+("Trondheim-Bodø-nattog", "Fauske", "08:17:00", "08:19:00",4),
+("Trondheim-Bodø-nattog", "Bodø","09:05:00", NULL,5),
+("Mo i Rana-Trondheim-morgentog", "Mo i Rana", NULL, "08:11:00",0),
+("Mo i Rana-Trondheim-morgentog", "Mosjøen", "09:12:00", "09:14:00",1),
+("Mo i Rana-Trondheim-morgentog", "Steinkjer", "12:29:00", "12:31:00",2),
+("Mo i Rana-Trondheim-morgentog", "Trondheim", "14:13:00",NULL,3);
 
 insert into TogruteForekomst (ForekomstID, Ukedag, TogruteID) values
 ("tro-bod-dag-man", "Mandag", "Trondheim-Bodø-dagtog"),
@@ -122,7 +122,9 @@ insert into VognType (VognType, VognNavn, AntallRader, AntallSeterPerRad, Antall
 (1, "SJ-sittevogn-1", 3, 4, NULL),
 (2, "SJ-sovevogn-1", NULL, NULL, 4);
 
+
 /* Ekstra innsetting for å kunne teste brukerhistoriene*/
+
 
 insert into Kunde(Kundenummer, Navn, Epost, Mobilnummer) values
 (1, "Ola Nordmann", "ola.nordmann@gmail.com", "40482387"),
@@ -135,18 +137,28 @@ insert into KundeOrdre(OrdreNummer, Dag, Tid, Kundenummer) values
 (2, "2023-03-29", "07:49:00", 2),
 (3, "2023-04-20", "23:05:00", 1),
 (4, "2023-05-12", "08:11:00", 3),
-(5, "2023-03-20", "07:31:00", 2);
+(5, "2023-03-20", "07:31:00", 2),
+(6, "2023-03-26", "07:30:00", 1),
+(7, "2023-03-26", "07:35:00", 2),
+(8, "2023-03-26", "07:37:00", 1);
 
 insert into Billett(BillettID, OrdreNummer, DelstrekningID, VognNavn) values
 (1, 1, 5, "SJ-sittevogn-1"),
 (2, 2, 8, "SJ-sittevogn-1"),
 (3, 3, 4, "SJ-sovevogn-1"),
 (4, 4, 17, "SJ-sittevogn-1"),
-(5, 5, 6, "SJ-sittevogn-1");
+(5, 5, 6, "SJ-sittevogn-1"),
+(6, 6, 11, "SJ-sittevogn-1"),
+(7, 7, 11, "SJ-sittevogn-1"),
+(8, 8, 14, "SJ-sittevogn-1");
 
 insert into HarPlass(BillettID, Plasser, ForekomstID) values
 (1, 1, "tro-bod-dag-tir"),
 (2, 2, "tro-bod-dag-ons"),
 (3, 1, "tro-bod-nat-tor"),
 (4, 2, "moi-tro-mor-fre"),
-(5, 1, "tro-bod-dag-man");
+(5, 1, "tro-bod-dag-man"),
+(6, 2, "tro-bod-dag-ons"),
+(7, 2, "tro-bod-dag-ons"),
+(8, 2, "tro-bod-dag-ons");
+

@@ -6,7 +6,7 @@
 import sqlite3
 import datetime
 
-dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag','Mandag']
+dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag']
 def ukedag(dato):
     dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
     ukedagsnummer = dateObj.weekday()
@@ -25,29 +25,15 @@ def sortedbytime(results):
         for i in results:
             out.append(i) if i[1]==k else None
     return out
-    
 
 
 def FormaterSvar(results):
     results=sortedbytime(results)
     s = (f"Togruter som går mellom {startStasjon} og {sluttStasjon} er: \n")
-    f = []
-    i = 0
-    #Luker ut feilen der mellomstasjoner i Mo i Rana-Trondheim-morgentog inkluderer alle togreiser
-    for i in range(0,len(results)):
-        if('Mo i Rana-Trondheim-morgentog' in results[i]):
-            f.append(results[i])
-            i+=1
-    if f:
-        for i in range(0, len(f)):
-            s += (f"{f[i][0]}  Dag: {f[i][1]}  Tid: {results[i][2]}\n")
-            i+=1
-        return s
-    #alle andre tilfeller
     for i in range(0,len(results)):
         s += (f"{results[i][0]}  Dag: {results[i][1]} Tid: {results[i][2]}\n")
 
-    if (i==0):
+    if len(results)==0:
         return (f"Ingen togreiser går mellom {startStasjon} og {sluttStasjon} i denne tidsperioden")
     return s
 
@@ -72,17 +58,17 @@ cursor.execute(f"""SELECT DISTINCT Togrute.TogruteID, TogruteForekomst.Ukedag,  
                 ON (TogRute.TogruteID = RuteInnomStart.TogruteID) 
                 
                 WHERE ((Ukedag = :ukedag AND (RuteInnomStart.AvgangsTid >= :klokkeslett) OR Ukedag = :nesteukedag)
-                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon));""", 
+                AND (RuteInnomStart.Stasjonsnavn = :startStasjon AND RuteInnomSlutt.Stasjonsnavn = :sluttStasjon)
+                AND (RuteInnomStart.Indeks < RuteInnomSlutt.Indeks))
+                ;""", 
                 {"klokkeslett": klokkeslett,
                  "ukedag": ukedag(dato),
                  "nesteukedag": nesteukedag(dato),
                  "startStasjon": startStasjon,
-                 "sluttStasjon": sluttStasjon,
+                 "sluttStasjon": sluttStasjon
                  })
 results = cursor.fetchall()
 
-
-print(results)
 print(FormaterSvar(results))
 con.close()
 
