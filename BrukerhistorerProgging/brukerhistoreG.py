@@ -110,7 +110,7 @@ def fullfør_bestilling(antall_plasser):
     TicketID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
     if (delstrekning == 0):
-        print(f"{start} til {slutt} er en ygyldig strekning")
+        print(f"{start} til {slutt} er en ugyldig strekning")
         exit()
     tid = (str) (hent_avgangsTid())
     con = sqlite3.connect("sql/tog.db")
