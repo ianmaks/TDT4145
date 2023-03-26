@@ -197,11 +197,23 @@ def beregn_ledige_senger():
     return results[0][0]
 
 def velg_vogn():
-    if  togrute == 'Trondheim-Bodø-nattog':
-        vogn = 'SJ-sovevogn-1'
+    if  togrute == togruter[1]:
+        if bool(capacity) == False or max(capacity) < beregn_ledige_seter()/2:
+            vogn = 'SJ-sittevogn-1'
+        elif max(capacity) >= beregn_ledige_seter()/2:
+            vogn = 'SJ-sittevogn-2'
+    elif togrute == togruter[2]:
+        if bool(capacity) == False or max(capacity) < beregn_ledige_senger()/2:
+            vogn = 'SJ-sovevogn-1'
+        elif max(capacity) >= beregn_ledige_seter()/2:
+            vogn = 'SJ-sovevogn-2'
     else:
-        vogn = 'SJ-sittevogn-1'
+        if bool(capacity) == False or max(capacity) < beregn_ledige_seter()/2:
+            vogn = 'SJ-sittevogn-3'
+        elif max(capacity) >= beregn_ledige_seter()/2:
+            vogn = 'SJ-sittevogn-4'
     return vogn
+
 
 # KUNDESPØRRINGER
 kundenummer=input("Legg inn kundenummer: ")
@@ -214,22 +226,22 @@ vogn_typer = [0, 1, 2]
 vogn_type = 1
 capacity = []
 
-
-
-if togrute == 'Trondheim-Bodø-nattog':
-    vogn_type = vogn_typer[int(input("Ønsker du (1) Sittevogn eller (2) Sovevogn? "))]
 for i in set_checks(togrute):
     check_avail(i)
 
-if bool(capacity) == False and togrute == 'Trondheim-Bodø-nattog':
-    print(f"Det er {beregn_ledige_senger()} ledige plasser på denne reisen.")
-    antall_plasser=input("Hvor mange sengeplasser ønsker du å bestille? ")
-    if (int) (antall_plasser) <= beregn_ledige_senger():
+if togrute == 'Trondheim-Bodø-nattog':
+    vogn_type = vogn_typer[int(input("Ønsker du (1) Sittevogn eller (2) Sovevogn? "))]
+
+velg_vogn()
+if togrute == togruter[1] or togrute == togruter[3]:
+    print("Det er {beregn_ledige_seter()} plasser på denne reisen")
+    antall_plasser = input("Hvor mange plasser ønsker du å bestille? ")
+    if max(capacity) + antall_plasser <= beregn_ledige_seter():
         fullfør_bestilling(antall_plasser)    
+
 else:
-    print(f"Det er {beregn_ledige_seter() - max(capacity)} ledige plasser på denne reisen.")
-    if max(capacity) < beregn_ledige_seter():
-        antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
-        if (int) (antall_plasser) + max(capacity) <= beregn_ledige_seter():
-            fullfør_bestilling(antall_plasser)    
-print(f"Da har det blitt kjøpt {antall_plasser} biletter mellom {start} og {slutt}")
+    print("Det er {beregn_ledige_senger()} plasser på denne reisen")
+    antall_plasser = input("Hvor mange plasser ønsker du å bestille? ")
+    if max(capacity) + antall_plasser <= beregn_ledige_senger():
+        fullfør_bestilling(antall_plasser)    
+
