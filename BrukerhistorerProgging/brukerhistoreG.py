@@ -186,7 +186,7 @@ def beregn_ledige_seter():
     return results[0][0]
 
 def beregn_ledige_senger():
-    con = sqlite3.connect("sql/tog.db)")
+    con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.execute(f""""
     
