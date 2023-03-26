@@ -245,13 +245,13 @@ for i in set_checks(togrute):
     check_avail(i)
 if togrute == togruter[1] or togrute == togruter[3]:
     print(f"Det er {beregn_ledige_seter()} plasser på denne reisen")
-    antall_plasser = input("Hvor mange plasser ønsker du å bestille? ")
+    antall_plasser = int(input("Hvor mange plasser ønsker du å bestille? "))
     if max(capacity) + antall_plasser <= beregn_ledige_seter():
         fullfør_bestilling(antall_plasser)    
 
 else:
     print(f"Det er {beregn_ledige_senger()} plasser på denne reisen")
-    antall_plasser = input("Hvor mange plasser ønsker du å bestille? ")
+    antall_plasser = int() (input("Hvor mange plasser ønsker du å bestille? "))
     if max(capacity) + antall_plasser <= beregn_ledige_senger():
         fullfør_bestilling(antall_plasser)    
 
