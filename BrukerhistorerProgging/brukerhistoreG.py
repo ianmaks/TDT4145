@@ -88,7 +88,7 @@ def fullfør_bestilling(antall_plasser):
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.executescript(f"""
-    insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) values ('{userID}', date('now'), time('now'), '{kundenummer}');
+    insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) values ('{userID}', #date('now'), time('now'), '{kundenummer}');
     insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{userID}', '{userID}', '{delstrekning}', '{vogn}');
     insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{userID}', '{antall_plasser}', '{forekomstID}');
     """)
