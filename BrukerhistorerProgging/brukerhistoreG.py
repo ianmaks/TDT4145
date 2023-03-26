@@ -194,8 +194,8 @@ def beregn_ledige_senger():
 	FROM TogRute 
     JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
     JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
-    WHERE VognType.VognType = vogn_type
-    AND TogRute.TogruteID = togrute;
+    WHERE VognType.VognType = :vogn_type
+    AND TogRute.TogruteID = :togrute;
 	
     """,
     {"vogn_type": vogn_type,
