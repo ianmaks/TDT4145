@@ -251,7 +251,7 @@ if togrute == togruter[1] or togrute == togruter[3]:
 
 else:
     print(f"Det er {beregn_ledige_senger()} plasser på denne reisen")
-    antall_plasser = int() (input("Hvor mange plasser ønsker du å bestille? "))
+    antall_plasser = int(input("Hvor mange plasser ønsker du å bestille? "))
     if max(capacity) + antall_plasser <= beregn_ledige_senger():
         fullfør_bestilling(antall_plasser)    
 
