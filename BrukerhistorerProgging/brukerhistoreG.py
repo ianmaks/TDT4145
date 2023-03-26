@@ -126,10 +126,15 @@ ukedag= ukedag(input("Hvilken dato vil du reise på? "))
 capacity = []
 for i in set_checks(togrute):
     check_avail(i)
-print(f"Det er {10 - max(capacity)} ledige plasser på denne reisen.")
-if max(capacity) < 10:
+if bool(capacity) == False:
+    print(f"Det er {10} ledige plasser på denne reisen.")
     antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
-    if (int) (antall_plasser) + max(capacity) <= 10:
+    if (int) (antall_plasser) <= 10:
         fullfør_bestilling(antall_plasser)    
-
+else:
+    print(f"Det er {10 - max(capacity)} ledige plasser på denne reisen.")
+    if max(capacity) < 10:
+        antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
+        if (int) (antall_plasser) + max(capacity) <= 10:
+            fullfør_bestilling(antall_plasser)    
 
