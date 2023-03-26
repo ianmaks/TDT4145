@@ -172,8 +172,9 @@ def beregn_ledige_seter():
 	FROM TogRute 
     JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
     JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
-    WHERE VognType.VognType = :vogntype
+    WHERE VognType.VognType = :vogn_type
     AND TogRute.TogruteID = :togrute
+    )
 	
 	SELECT SUM(TotalSeter)
 	FROM AntallSeter;
