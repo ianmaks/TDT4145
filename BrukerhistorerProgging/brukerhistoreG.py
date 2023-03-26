@@ -38,7 +38,7 @@ def check_avail(checks):
 
 # HENTE NY(TT) ORDRENUMMER/BILLETTID
 
-def new_userID():
+def new_TicketID():
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.execute(f"SELECT MAX(BillettID) FROM Billett;")
@@ -53,7 +53,7 @@ def hent_delstrekning():
     results = cursor.fetchall()
     con.close()
     print(results)
-    return results[0]
+    return results[0][0]
 
 def hent_forekomstID():
     con = sqlite3.connect("sql/tog.db")
@@ -74,14 +74,16 @@ def velg_vogn():
 # BESTILLE BILETTER
 
 def fullfør_bestilling(antall_plasser):
-    vogn = ""
-    velg_vogn()
+    vogn = velg_vogn()
+    forekomstID = (str) (hent_forekomstID())
+    userID = (str) (new_TicketID())
+    delstrekning = (int) ( hent_delstrekning())
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.executescript(f"""
-    insert into KundeOrdre (OrdreNummer, Dag, Tid, KundeNummer) values ('{new_userID}', date('now'), time('now'), '{kundenummer}');
-    insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{new_userID}', '{new_userID}', '{hent_delstrekning()}', '{vogn}');
-    insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{new_userID}', '{antall_plasser}', '{hent_forekomstID()}');
+    insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) values ('{userID}', date('now'), time('now'), '{kundenummer}');
+    insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{userID}', '{userID}', '{delstrekning}', '{vogn}');
+    insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{userID}', '{antall_plasser}', '{forekomstID}');
     """)
 
     con.commit()
