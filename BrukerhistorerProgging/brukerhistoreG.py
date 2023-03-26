@@ -63,7 +63,6 @@ def hent_delstrekning():
     cursor.execute(f"select DelstrekningID as targetDelstrekning from Delstrekning where Delstrekning.StartStasjon = '{start}' and Delstrekning.Endestasjon = '{slutt}';")
     results = cursor.fetchall()
     con.close()
-    print(results)
     return results[0][0]
 
 def hent_forekomstID():
@@ -72,8 +71,18 @@ def hent_forekomstID():
     cursor.execute(f"select ForekomstID from TogruteForekomst where TogruteID = '{togrute}' and Ukedag = '{ukedag}'")
     results = cursor.fetchall()
     con.close()
-    print(results[0])
+    
     return results[0][0]
+
+def hent_avgangsTid():
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
+    cursor.execute(f"Select AvgangsTid from RuteInnom Where TogruteID = '{togrute}' AND Stasjonsnavn = '{start}'")
+    results = cursor.fetchall()
+    con.close()
+    print(results)
+    return results[0][0]
+    
 
 def velg_vogn():
     if  togrute == 'Trondheim-Bodø-nattog':
@@ -89,6 +98,7 @@ def fullfør_bestilling(antall_plasser):
     forekomstID = (str) (hent_forekomstID())
     TicketID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
+    tid = (str) (hent_avgangsTid())
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.executescript(f"""
