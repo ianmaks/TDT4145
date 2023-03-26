@@ -188,7 +188,7 @@ def beregn_ledige_seter():
 def beregn_ledige_senger():
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
-    cursor.execute(f""""
+    cursor.execute(f"""
     
 	SELECT  SUM(VognType.AntallKupeer)
 	FROM TogRute 
