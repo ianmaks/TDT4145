@@ -30,23 +30,10 @@ def sortedbytime(results):
 def FormaterSvar(results):
     results=sortedbytime(results)
     s = (f"Togruter som går mellom {startStasjon} og {sluttStasjon} er: \n")
-    f = []
-    i = 0
-    #Luker ut feilen der mellomstasjoner i Mo i Rana-Trondheim-morgentog inkluderer alle togreiser
-    # for i in range(0,len(results)):
-    #     if('Mo i Rana-Trondheim-morgentog' in results[i]):
-    #         f.append(results[i])
-    #         i+=1
-    # if f:
-    #     for i in range(0, len(f)):
-    #         s += (f"{f[i][0]}  Dag: {f[i][1]}  Tid: {results[i][2]}\n")
-    #         i+=1
-    #     return s
-    #alle andre tilfeller
     for i in range(0,len(results)):
         s += (f"{results[i][0]}  Dag: {results[i][1]} Tid: {results[i][2]}\n")
 
-    if (i==0):
+    if len(results)==0:
         return (f"Ingen togreiser går mellom {startStasjon} og {sluttStasjon} i denne tidsperioden")
     return s
 
