@@ -112,21 +112,24 @@ def fullfør_bestilling(antall_plasser):
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.execute(f"""insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) 
-                    values (:userID, date('now'), time('now'), :kundenummer);""",
-                    {"userID": TicketID,
+                    values (:ordrenummer, :reisedato, :tid , :kundenummer);""",
+                    {"ordrenummer": TicketID,
+                     "reisedato": reisedato,
+                     "tid": tid,
                      "kundenummer": kundenummer})
     
     cursor.execute(f"""insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) 
-                    values (:userID, :userID, :delstrekning, :vogn)""",
-                    {"userID": TicketID,
+                    values (:billetID, :ordrenummer, :delstrekning, :vogn)""",
+                    {"billetID": TicketID,
+                     "ordrenummer": TicketID,
                      "delstrekning": delstrekning,
-                     "vogn": vogn});
+                     "vogn": vogn})
     
     cursor.execute(f"""insert into HarPlass (BillettID, Plasser, ForekomstID) 
-                    values (:userID, :antall_plasser, :forekomstID)""",
-                    {"userID": TicketID,
+                    values (:billetID, :antall_plasser, :forekomstID)""",
+                    {"billetID": TicketID,
                      "antall_plasser": antall_plasser,
-                     "forekomstID": forekomstID});
+                     "forekomstID": forekomstID})
 
     con.commit()
     con.close()
@@ -159,12 +162,14 @@ def beregn_ledige_plasser():
 	FROM TogRute 
     JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
     JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
-    WHERE VognType.VognType = (:vogntype) {"vogntype": vogn_type}
-    AND TogRute.TogruteID = (:togrute) {"togrute": togrute}
+    WHERE VognType.VognType = :vogntype
+    AND TogRute.TogruteID = :togrute
 	
 	SELECT SUM(TotalSeter)
 	FROM AntallSeter;
-    """)
+    """,
+    {"vogn_type": vogn_type,
+     "togrute": togrute})
 
 
 
@@ -183,7 +188,7 @@ for i in set_checks(togrute):
 if togrute == 'Trondheim-Bodø-nattog':
     vogn_typer = [0, 1, 2]
     vogn_type = vogn_typer[input("Ønsker du (1) Sittevogn eller (2) Sovevogn? ")]
-
+    
 
 if bool(capacity) == False:
     print(f"Det er {10} ledige plasser på denne reisen.")
