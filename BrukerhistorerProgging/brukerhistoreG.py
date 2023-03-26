@@ -68,6 +68,8 @@ def hent_delstrekning():
                    {"start": start,
                     "slutt": slutt})
     results = cursor.fetchall()
+    if not results:
+        return 0
     con.close()
     return results[0][0]
 
@@ -90,7 +92,6 @@ def hent_avgangsTid():
                     "start": start})
     results = cursor.fetchall()
     con.close()
-    print(results)
     return results[0][0]
     
 
@@ -108,6 +109,9 @@ def fullfør_bestilling(antall_plasser):
     forekomstID = (str) (hent_forekomstID())
     TicketID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
+    if (delstrekning == 0):
+        print(f"{start} til {slutt} er en ygyldig strekning")
+        exit()
     tid = (str) (hent_avgangsTid())
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
@@ -201,4 +205,4 @@ else:
         antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
         if (int) (antall_plasser) + max(capacity) <= 10:
             fullfør_bestilling(antall_plasser)    
-
+print(f"Da har det blitt kjøpt {antall_plasser} biletter mellom {start} og {slutt}")
