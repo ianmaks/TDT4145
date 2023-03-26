@@ -31,7 +31,7 @@ def check_avail(checks):
     OR StrekningInnom.Stasjonsnavn =  :checksnull
     OR StrekningInnom.Stasjonsnavn = :checksone)
     AND TogRute.TogruteID = :togrute
-    AND KundeOrdre.Dag = :ukedag
+    AND KundeOrdre.Dag = :reisedato
     AND Billett.VognNavn = :vogn
     )
     SELECT SUM(Plasser)
@@ -40,7 +40,7 @@ def check_avail(checks):
     {"checksnull": checks[0],
      "checksone": checks[1],
      "togrute": togrute,
-     "dag": reisedato,
+     "reisedato": reisedato,
      "vogn": velg_vogn()
      })
     results = cursor.fetchall()
