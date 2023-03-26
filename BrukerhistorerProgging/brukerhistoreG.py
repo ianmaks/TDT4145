@@ -187,7 +187,7 @@ for i in set_checks(togrute):
 
 if togrute == 'Trondheim-Bodø-nattog':
     vogn_typer = [0, 1, 2]
-    vogn_type = vogn_typer[input("Ønsker du (1) Sittevogn eller (2) Sovevogn? ")]
+    vogn_type = vogn_typer[input(int("Ønsker du (1) Sittevogn eller (2) Sovevogn? "))]
     
 
 if bool(capacity) == False:
