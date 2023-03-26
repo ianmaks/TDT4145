@@ -163,9 +163,9 @@ def set_checks(togrute):
     return checks
 
 def beregn_ledige_seter():
-    con = sqlite3.connect("sql/tog.db)")
+    con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
-    cursor.execute(f""""
+    cursor.execute(f"""
     
     With AntallSeter AS (
 	SELECT  VognType.VognNavn, VognType.AntallRader*VognType.AntallSeterPerRad AS TotalSeter
