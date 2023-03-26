@@ -115,8 +115,7 @@ insert into TogruteForekomst (ForekomstID, Ukedag, TogruteID) values
 ("moi-tro-mor-ons", "Onsdag", "Mo i Rana-Trondheim-morgentog"),
 ("moi-tro-mor-tor", "Torsdag", "Mo i Rana-Trondheim-morgentog"),
 ("moi-tro-mor-fre", "Fredag", "Mo i Rana-Trondheim-morgentog"),
-("moi-tro-mor-lør", "Lørdag", "Mo i Rana-Trondheim-morgentog"),
-("moi-tro-mor-søn", "Søndag", "Mo i Rana-Trondheim-morgentog");
+
 
 insert into VognType (VognType, VognNavn, AntallRader, AntallSeterPerRad, AntallKupeer) values
 (1, "SJ-sittevogn-1", 3, 4, NULL),
