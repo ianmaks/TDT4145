@@ -2,6 +2,7 @@
 #og kjøpe de billettene hen ønsker.
 #
 #Pass på at dere bare selger ledige plasser
+import datetime
 import sqlite3
 import itertools
 
@@ -37,6 +38,12 @@ def check_avail(checks):
         capacity.append((int) (results[0][0]))
 
 # HENTE NY(TT) ORDRENUMMER/BILLETTID
+
+dager = ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag']
+def ukedag(dato):
+    dateObj= datetime.datetime.strptime(dato, '%d.%m.%Y')
+    ukedagsnummer = dateObj.weekday()
+    return dager[ukedagsnummer]
 
 def new_TicketID():
     con = sqlite3.connect("sql/tog.db")
@@ -114,7 +121,7 @@ kundenummer=input("Legg inn kundenummer: ")
 togrute = togruter[int(input("Velg togrute: \n (1) Trondheim-Bodø-dagtog \n (2) Trondheim-Bodø-nattog \n (3) Mo i Rana-Trondheim-morgentog \n Togrute: "))]
 start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
-ukedag=input("Hvilken ukedag vil du reise på? ")
+ukedag= ukedag(input("Hvilken dato vil du reise på? "))
 
 capacity = []
 for i in set_checks(togrute):
