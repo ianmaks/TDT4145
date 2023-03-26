@@ -174,8 +174,10 @@ def beregn_ledige_plasser():
     """,
     {"vogn_type": vogn_type,
      "togrute": togrute})
-
-
+    
+    results = cursor.fetchall()
+    con.close()
+    return results[0][0]
 
 # KUNDESPØRRINGER
 kundenummer=input("Legg inn kundenummer: ")
