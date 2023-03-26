@@ -115,8 +115,7 @@ insert into TogruteForekomst (ForekomstID, Ukedag, TogruteID) values
 ("moi-tro-mor-ons", "Onsdag", "Mo i Rana-Trondheim-morgentog"),
 ("moi-tro-mor-tor", "Torsdag", "Mo i Rana-Trondheim-morgentog"),
 ("moi-tro-mor-fre", "Fredag", "Mo i Rana-Trondheim-morgentog"),
-("moi-tro-mor-lør", "Lørdag", "Mo i Rana-Trondheim-morgentog"),
-("moi-tro-mor-søn", "Søndag", "Mo i Rana-Trondheim-morgentog");
+
 
 insert into VognType (VognType, VognNavn, AntallRader, AntallSeterPerRad, AntallKupeer) values
 (1, "SJ-sittevogn-1", 3, 4, NULL),
@@ -144,19 +143,19 @@ insert into Kunde(Kundenummer, Navn, Epost, Mobilnummer) values
 (4, "Johanne Bø", "johbo@gmail.com", "40457676");
 
 insert into KundeOrdre(OrdreNummer, Dag, Tid, Kundenummer) values
-(1, "2023-04-04", "07:30:00", 1),
-(2, "2023-03-29", "07:49:00", 2),
+(1, "2023-04-04", "07:40:00", 1),
+(2, "2023-03-29", "09:51:00", 2),
 (3, "2023-04-20", "23:05:00", 1),
 (4, "2023-05-12", "08:11:00", 3),
-(5, "2023-03-20", "07:31:00", 2),
-(6, "2023-03-31", "07:30:00", 1),
-(7, "2023-04-12", "07:35:00", 3),
-(8, "2023-03-29", "07:37:00", 4);
+(5, "2023-03-20", "09:51:00", 2),
+(6, "2023-03-31", "13:20:00", 1),
+(7, "2023-04-12", "13:20:00", 3),
+(8, "2023-03-29", "13:20:00", 4);
 
 insert into Billett(BillettID, OrdreNummer, DelstrekningID, VognNavn) values
 (1, 1, 5, "SJ-sittevogn-1"),
 (2, 2, 8, "SJ-sittevogn-1"),
-(3, 3, 4, "SJ-sovevogn-1"),
+(3, 3, 4, "SJ-sovevogn-3"),
 (4, 4, 17, "SJ-sittevogn-4"),
 (5, 5, 6, "SJ-sittevogn-1"),
 (6, 6, 11, "SJ-sittevogn-1"),

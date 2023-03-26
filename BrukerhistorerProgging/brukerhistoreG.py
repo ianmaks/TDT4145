@@ -66,7 +66,6 @@ def hent_delstrekning():
                     "slutt": slutt})
     results = cursor.fetchall()
     con.close()
-    print(results)
     return results[0][0]
 
 def hent_forekomstID():
@@ -77,8 +76,20 @@ def hent_forekomstID():
                     "ukedag": ukedag})
     results = cursor.fetchall()
     con.close()
-    print(results[0])
+    
     return results[0][0]
+
+def hent_avgangsTid():
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
+    cursor.execute(f"Select AvgangsTid from RuteInnom Where TogruteID = :togrute AND Stasjonsnavn = :start",
+                   {"togrute": togrute,
+                    "start": start})
+    results = cursor.fetchall()
+    con.close()
+    print(results)
+    return results[0][0]
+    
 
 def velg_vogn():
     if  togrute == 'Trondheim-Bodø-nattog':
@@ -94,6 +105,7 @@ def fullfør_bestilling(antall_plasser):
     forekomstID = (str) (hent_forekomstID())
     userID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
+    tid = (str) (hent_avgangsTid())
     con = sqlite3.connect("sql/tog.db")
     cursor = con.cursor()
     cursor.execute(f"""insert into KundeOrdre (OrdreNummer, Dag, Tid, Kundenummer) 
@@ -141,7 +153,8 @@ kundenummer=input("Legg inn kundenummer: ")
 togrute = togruter[int(input("Velg togrute: \n (1) Trondheim-Bodø-dagtog \n (2) Trondheim-Bodø-nattog \n (3) Mo i Rana-Trondheim-morgentog \n Togrute: "))]
 start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
-ukedag= ukedag(input("Hvilken dato vil du reise på? "))
+dato= input("Hvilken dato vil du reise på? ")
+ukedag= ukedag(dato)
 
 capacity = []
 for i in set_checks(togrute):
