@@ -233,7 +233,7 @@ reisedato = input("Hvilken dato vil du reise på? ")
 ukedag= ukedag(reisedato)
 vogn_typer = [0, 1, 2]
 vogn_type = 1
-capacity = []
+capacity = [0]
 
 
 
