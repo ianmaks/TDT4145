@@ -30,7 +30,7 @@ def check_avail(checks):
     OR StrekningInnom.Stasjonsnavn =  :checksnull
     OR StrekningInnom.Stasjonsnavn = :checksone)
     AND TogRute.TogruteID = :togrute
-    AND TogruteForekomst.Ukedag = :ukedag
+    AND KundeOrdre.Dag = :ukedag
     )
     SELECT SUM(Plasser)
     FROM   Orders;
@@ -38,7 +38,7 @@ def check_avail(checks):
     {"checksnull": checks[0],
      "checksone": checks[1],
      "togrute": togrute,
-     "ukedag": ukedag
+     "dag": reisedato
      })
     results = cursor.fetchall()
     con.close()
@@ -156,7 +156,7 @@ def set_checks(togrute):
             checks.append((stasjoner[i], stasjoner[i+1]))
     return checks
 
-def beregn_ledige_plasser():
+def beregn_ledige_seter():
     con = sqlite3.connect("sql/tog.db)")
     cursor = con.cursor()
     cursor.execute(f""""
@@ -171,6 +171,26 @@ def beregn_ledige_plasser():
 	
 	SELECT SUM(TotalSeter)
 	FROM AntallSeter;
+    """,
+    {"vogn_type": vogn_type,
+     "togrute": togrute})
+    
+    results = cursor.fetchall()
+    con.close()
+    return results[0][0]
+
+def beregn_ledige_senger():
+    con = sqlite3.connect("sql/tog.db)")
+    cursor = con.cursor()
+    cursor.execute(f""""
+    
+	SELECT  SUM(VognType.AntallKupeer)
+	FROM TogRute 
+    JOIN Oppsett on Oppsett.TogruteID = TogRute.TogruteID
+    JOIN VognType on Oppsett.VognNavn = VognType.VognNavn
+    WHERE VognType.VognType = vogn_type
+    AND TogRute.TogruteID = togrute;
+	
     """,
     {"vogn_type": vogn_type,
      "togrute": togrute})
@@ -197,14 +217,14 @@ if togrute == 'Trondheim-Bodø-nattog':
     
 
 if bool(capacity) == False:
-    print(f"Det er {10} ledige plasser på denne reisen.")
+    print(f"Det er {beregn_ledige_plasser()} ledige plasser på denne reisen.")
     antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
-    if (int) (antall_plasser) <= 10:
+    if (int) (antall_plasser) <= beregn_ledige_plasser():
         fullfør_bestilling(antall_plasser)    
 else:
-    print(f"Det er {10 - max(capacity)} ledige plasser på denne reisen.")
-    if max(capacity) < 10:
+    print(f"Det er {beregn_ledige_plasser() - max(capacity)} ledige plasser på denne reisen.")
+    if max(capacity) < beregn_ledige_plasser():
         antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
-        if (int) (antall_plasser) + max(capacity) <= 10:
+        if (int) (antall_plasser) + max(capacity) <= beregn_ledige_plasser():
             fullfør_bestilling(antall_plasser)    
 print(f"Da har det blitt kjøpt {antall_plasser} biletter mellom {start} og {slutt}")
