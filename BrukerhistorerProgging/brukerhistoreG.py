@@ -5,11 +5,13 @@
 import sqlite3
 import itertools
 
-togruter = ['Trondheim-Bodø-dagtog', 'Trondheim-Bodø-nattog', 'Mo i Rana-Trondheim-morgentog']
+togruter = ['dummy', 'Trondheim-Bodø-dagtog', 'Trondheim-Bodø-nattog', 'Mo i Rana-Trondheim-morgentog']
 
+# SJEKKE ANTALL SETER I BRUK PÅ EN REISE
 def check_avail(checks):
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
     cursor.execute(f"""
-    
     WITH Orders
 	AS (
     SELECT DISTINCT Billett.BillettID, Delstrekning.DelstrekningID, HarPlass.Plasser, TogruteForekomst.Ukedag
@@ -25,24 +27,66 @@ def check_avail(checks):
     OR StrekningInnom.Stasjonsnavn = '{checks[1]}')
     AND TogRute.TogruteID = '{togrute}'
     AND TogruteForekomst.Ukedag = '{ukedag}'
-
     )
-    SELECT *   
+    SELECT SUM(Plasser)
     FROM   Orders
-
     """)
-    # BillettID, Ukedag, SUM(Plasser)
-
-    
     results = cursor.fetchall()
+    con.close()
+    if isinstance(results[0][0], int): 
+        capacity.append((int) (results[0][0]))
 
-    for i in results:
-        print(checks[0], checks[1])
-        print(i)
-    print("")
+# HENTE NY(TT) ORDRENUMMER/BILLETTID
 
-con = sqlite3.connect("sql/tog.db")
-cursor = con.cursor()
+def new_userID():
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
+    cursor.execute(f"SELECT MAX(BillettID) FROM Billett;")
+    results = cursor.fetchall()
+    con.close()
+    return 1 if results[0][0] == None else results[0][0]+1
+
+def hent_delstrekning():
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
+    cursor.execute(f"select DelstrekningID as targetDelstrekning from Delstrekning where Delstrekning.StartStasjon = '{start}' and Delstrekning.Endestasjon = '{slutt}';")
+    results = cursor.fetchall()
+    con.close()
+    print(results)
+    return results[0]
+
+def hent_forekomstID():
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
+    cursor.execute(f"select ForekomstID from TogruteForekomst where TogruteID = '{togrute}' and Ukedag = '{ukedag}'")
+    results = cursor.fetchall()
+    con.close()
+    print(results[0])
+    return results[0][0]
+
+def velg_vogn():
+    if  togrute == 'Trondheim-Bodø-nattog':
+        vogn = 'SJ-sovevogn-1'
+    else:
+        vogn = 'SJ-sittevogn-1'
+    return vogn
+
+# BESTILLE BILETTER
+
+def fullfør_bestilling(antall_plasser):
+    vogn = ""
+    velg_vogn()
+    con = sqlite3.connect("sql/tog.db")
+    cursor = con.cursor()
+    cursor.executescript(f"""
+    insert into KundeOrdre (OrdreNummer, Dag, Tid, KundeNummer) values ('{new_userID}', date('now'), time('now'), '{kundenummer}');
+    insert into Billett (BillettID, Ordrenummer, DelstrekningID, VognNavn) values ('{new_userID}', '{new_userID}', '{hent_delstrekning()}', '{vogn}');
+    insert into HarPlass (BillettID, Plasser, ForekomstID) values ('{new_userID}', '{antall_plasser}', '{hent_forekomstID()}');
+    """)
+
+    con.commit()
+    con.close()
+
 
 # VELG STASJONSREKKEFØLGE BASERT PÅ TOGRUTE
 def set_checks(togrute):
@@ -59,8 +103,9 @@ def set_checks(togrute):
         check_slutt = stasjoner.index(f"{slutt}")
         for i in range(check_start, check_slutt):
             checks.append((stasjoner[i], stasjoner[i+1]))
-        print(checks)
     return checks
+
+
 
 # KUNDESPØRRINGER
 kundenummer=input("Legg inn kundenummer: ")
@@ -69,13 +114,13 @@ start=input("Startstasjon: ")
 slutt=input("Sluttstasjon: ")
 ukedag=input("Hvilken ukedag vil du reise på? ")
 
-
+capacity = []
 for i in set_checks(togrute):
     check_avail(i)
+print(f"Det er {10 - max(capacity)} ledige plasser på denne reisen.")
+if max(capacity) < 10:
+    antall_plasser=input("Hvor mange plasser ønsker du å bestille? ")
+    if (int) (antall_plasser) + max(capacity) <= 10:
+        fullfør_bestilling(antall_plasser)    
 
-#kjope=input("angi hvilken du ønsker å kjøpe")
 
-#cursor.execute(f"")
-
-
-con.close()
