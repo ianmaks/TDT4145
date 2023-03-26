@@ -3,6 +3,7 @@
 #
 #Pass på at dere bare selger ledige plasser
 import datetime
+import math
 import sqlite3
 import itertools
 
@@ -31,7 +32,7 @@ def check_avail(checks):
     OR StrekningInnom.Stasjonsnavn = :checksone)
     AND TogRute.TogruteID = :togrute
     AND KundeOrdre.Dag = :ukedag
-    Billett.VognNavn = :vogn
+    AND Billett.VognNavn = :vogn
     )
     SELECT SUM(Plasser)
     FROM   Orders;
@@ -106,6 +107,14 @@ def fullfør_bestilling(antall_plasser):
     forekomstID = (str) (hent_forekomstID())
     TicketID = (str) (new_TicketID())
     delstrekning = (int) ( hent_delstrekning())
+
+    #hvis vogn_type==2: skal vi endre til at den tar opp det nermeste partallet plasser og hele ruten
+    if vogn_type==2:
+        antall_plasser = 2*math.ceil(antall_plasser/2) #fyller hele kabinen
+        delstrekning = (int) (5) #bestiller for trondheim - bodø
+    else:   
+        delstrekning = (int) ( hent_delstrekning())
+        
     if (delstrekning == 0):
         print(f"{start} til {slutt} er en ugyldig strekning")
         exit()
